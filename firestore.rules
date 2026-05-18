@@ -1,0 +1,49 @@
+// Firestore security rules for hotel-golden-glory
+//
+// Deploy with:
+//   firebase deploy --only firestore:rules
+//
+// Auth model: there is no public client SDK usage of Firestore from the
+// website — all reads/writes happen server-side via firebase-admin, which
+// bypasses these rules. These rules therefore enforce a default-deny on the
+// client SDK as defense in depth.
+//
+// Two real exceptions:
+//   - rooms/*       — public read so a future client widget can render menus
+//   - availability/* — public read so a future client widget can show calendars
+// Bookings are NEVER readable client-side (they contain guest PII).
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helpers
+    function isAdmin() {
+      return request.auth != null && request.auth.token.admin == true;
+    }
+
+    // rooms/{slug} — overrides for static room data (totalRooms, heroImage, gallery, rates)
+    match /rooms/{slug} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // availability/{slug}_{date} — admin-set blocks (and legacy held counts)
+    match /availability/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // bookings/{bookingId} — contains guest PII and payment info.
+    // No client access. Admin SDK on the server bypasses rules and is the
+    // only path that reads/writes this collection.
+    match /bookings/{bookingId} {
+      allow read, write: if false;
+    }
+
+    // Default deny — anything not explicitly matched above is blocked.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

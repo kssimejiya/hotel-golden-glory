@@ -1,0 +1,29 @@
+// Firebase Storage rules for hotel-golden-glory
+//
+// Deploy with:
+//   firebase deploy --only storage
+//
+// Public-read for room images (so <Image> tags on the public site work), but
+// only authenticated admins (custom claim `admin: true`) can upload/delete.
+// Server-side admin SDK bypasses these rules.
+
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isAdmin() {
+      return request.auth != null && request.auth.token.admin == true;
+    }
+
+    // rooms/<slug>/<filename> — uploaded via the admin GalleryEditor
+    match /rooms/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Default deny
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
