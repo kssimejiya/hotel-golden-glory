@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 // Google Maps embed targets the verified Hotel Golden Glory place (ftid pins the
 // exact business listing rather than relying on a fuzzy address query).
 const mapsSrc =
-  "https://www.google.com/maps?q=Hotel+Golden+Glory,+VV+Commercial+Complex,+Dhebar+Rd,+Millpara,+Bhakti+Nagar,+Rajkot,+Gujarat+360002&ftid=0x3959cbeefea1e7ad:0x220a1ca61eeb6d18&output=embed";
+  "https://www.google.com/maps?q=Hotel+Golden+Glory,+Millpara,+Bhakti+Nagar,+Rajkot,+Gujarat+360002&ftid=0x3959cbeefea1e7ad:0x220a1ca61eeb6d18&z=17&output=embed";
 
 export default function ContactPage() {
   return (
