@@ -91,7 +91,7 @@ export function BookingWizard({ rooms }: { rooms: Room[] }) {
   if (!hydrated) {
     return (
       <>
-        <PageHero title="Book Your Stay" subtitle="Secure your room at The Blues Hotel Golden Glory" />
+        <PageHero title="Book Your Stay" subtitle="Secure your room at Hotel Golden Glory" />
         <section className="bg-cream py-12">
           <Container>
             <div className="mx-auto max-w-2xl">
@@ -117,7 +117,7 @@ export function BookingWizard({ rooms }: { rooms: Room[] }) {
       <InitFromParams />
       <PageHero
         title="Book Your Stay"
-        subtitle="Secure your room at The Blues Hotel Golden Glory"
+        subtitle="Secure your room at Hotel Golden Glory"
       />
       <Breadcrumb
         items={[{ label: "Home", href: "/" }, { label: "Book Your Stay" }]}

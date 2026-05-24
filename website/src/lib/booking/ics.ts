@@ -12,7 +12,7 @@ export function generateICS(booking: Booking): string {
   return [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//The Blues Hotel Golden Glory//Booking//EN",
+    "PRODID:-//Hotel Golden Glory//Booking//EN",
     "BEGIN:VEVENT",
     `DTSTART;VALUE=DATE:${checkIn}`,
     `DTEND;VALUE=DATE:${checkOut}`,

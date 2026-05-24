@@ -20,7 +20,7 @@ export default function ContactPage() {
     <>
       <PageHero
         title="Contact"
-        subtitle="We're here 24/7. Reach out for reservations, enquiries, or directions."
+        subtitle="Reception at The Blues Hotel Golden Glory is open around the clock, every day. Call, write, or simply walk in — we'll take it from there."
       />
       <Breadcrumb
         items={[{ label: "Home", href: "/" }, { label: "Contact" }]}
@@ -122,8 +122,10 @@ export default function ContactPage() {
                 </div>
               </div>
               <p className="mt-3 text-xs text-soft-gray">
-                Located near Bhutkhana Petrol Pump in Bhakti Nagar — a short
-                drive from Rajkot railway station and the city centre.
+                In Bhakti Nagar, near Bhutkhana Petrol Pump — minutes from
+                Rajkot Junction, the city&apos;s commercial centre, and the
+                road west to Saurashtra. On-site parking, easy auto and cab
+                access.
               </p>
             </div>
           </div>

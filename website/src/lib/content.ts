@@ -1,7 +1,7 @@
 import type { Room, Testimonial, Amenity } from "@/types";
 
 export const hotelInfo = {
-  name: "The Blues Hotel Golden Glory",
+  name: "Hotel Golden Glory",
   shortName: "Hotel Golden Glory",
   brand: "The Blues",
   tagline: "Exceptional Value Exceptional Service",
@@ -70,7 +70,7 @@ export const rooms: Room[] = [
       "Generously sized work desk with reading lamp",
       "Marble-finished bathroom with premium toiletries",
       "Complimentary high-speed Wi-Fi throughout stay",
-      "24/7 in-room dining from T3 Café",
+      "24/7 in-room dining",
     ],
   },
   {
@@ -216,7 +216,7 @@ export const roomFAQs = [
   {
     question: "What's included in each meal plan?",
     answer:
-      "Room Only (EP) includes accommodation with no meals. With Breakfast (CP) adds a daily breakfast buffet at T3 Café. Breakfast + Dinner (MAP) includes both daily breakfast and dinner buffets. All plans include complimentary Wi-Fi, parking, and access to hotel facilities.",
+      "Room Only (EP) includes accommodation with no meals. With Breakfast (CP) adds a daily breakfast buffet. Breakfast + Dinner (MAP) includes both daily breakfast and dinner buffets. All plans include complimentary Wi-Fi, parking, and access to hotel facilities.",
   },
   {
     question: "What's the cancellation policy?",
@@ -252,7 +252,7 @@ export function getOtherRooms(currentSlug: string): Room[] {
 export const amenities: Amenity[] = [
   {
     title: "Multi-Cuisine Dining",
-    description: "T3 Café serving global flavours around the clock",
+    description: "Multi-cuisine restaurant serving global flavours around the clock",
     icon: "UtensilsCrossed",
   },
   {
@@ -262,7 +262,7 @@ export const amenities: Amenity[] = [
   },
   {
     title: "Conference Facilities",
-    description: "1100 sqft hall and meeting room for up to 100 guests",
+    description: "Hall and meeting room for up to 100 guests",
     icon: "Presentation",
   },
   {
@@ -290,6 +290,16 @@ export const amenities: Amenity[] = [
     description: "Individually controlled climate in every room",
     icon: "Snowflake",
   },
+  {
+    title: "Airport Pick-up & Drop",
+    description: "Complimentary airport transfer service for all guests",
+    icon: "Plane",
+  },
+  {
+    title: "Driver Room",
+    description: "Comfortable accommodation available for your driver",
+    icon: "BedSingle",
+  },
 ];
 
 // PLACEHOLDER — replace with real reviews
@@ -298,7 +308,7 @@ export const testimonials: Testimonial[] = [
     name: "Rajesh Mehta",
     role: "Business Consultant",
     location: "Ahmedabad",
-    text: "Stayed here for a week-long project in Rajkot. The rooms are spotless, Wi-Fi never dropped during my video calls, and T3 Café kept me going with excellent food at all hours. Best value business hotel in the city.",
+    text: "Stayed here for a week-long project in Rajkot. The rooms are spotless, Wi-Fi never dropped during my video calls, and the restaurant kept me going with excellent food at all hours. Best value business hotel in the city.",
     rating: 5,
   },
   {

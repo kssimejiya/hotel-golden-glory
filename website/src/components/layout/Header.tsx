@@ -70,19 +70,19 @@ export function Header() {
         <Link href="/" className="flex flex-col leading-none">
           <span
             className={cn(
-              "font-display text-xl font-bold tracking-wide transition-colors duration-300",
-              scrolled ? "text-blue" : "text-white"
+              "font-body text-[0.6rem] font-semibold uppercase tracking-[0.2em] transition-colors duration-300",
+              scrolled ? "text-gold" : "text-gold-light"
             )}
           >
             THE BLUES
           </span>
           <span
             className={cn(
-              "font-body text-[0.6rem] font-semibold uppercase tracking-[0.2em] transition-colors duration-300",
-              scrolled ? "text-gold" : "text-gold-light"
+              "font-display text-xl font-bold tracking-wide transition-colors duration-300",
+              scrolled ? "text-blue" : "text-white"
             )}
           >
-            Hotel Golden Glory
+            HOTEL GOLDEN GLORY
           </span>
         </Link>
 
@@ -92,7 +92,7 @@ export function Header() {
               key={link.href}
               href={link.href}
               className={cn(
-                "font-body text-sm font-medium transition-colors duration-200 hover:text-gold",
+                "font-body text-sm font-medium transition-colors duration-200 hover:text-gold outline-none focus-visible:text-gold",
                 scrolled ? "text-charcoal" : "text-white"
               )}
             >

@@ -7,7 +7,7 @@ import { hotelInfo } from "@/lib/content";
 export const metadata: Metadata = {
   title: "Cancellation Policy",
   description:
-    "Cancellation and refund terms for bookings at The Blues Hotel Golden Glory, Rajkot.",
+    "Cancellation and refund terms for bookings at Hotel Golden Glory, Rajkot.",
 };
 
 // POLICY COPY — confirm exact terms with hotel management before launch

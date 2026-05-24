@@ -7,7 +7,7 @@ import { roomRepo } from "@/lib/firebase/roomRepo";
 export const metadata: Metadata = {
   title: "Book Your Stay",
   description:
-    "Book your room at The Blues Hotel Golden Glory, Rajkot. Choose from Deluxe, Superior, Premium, or Blues Suite with flexible meal plans.",
+    "Book your room at Hotel Golden Glory, Rajkot. Choose from Deluxe, Superior, Premium, or Blues Suite with flexible meal plans.",
 };
 
 export default async function BookingPage() {

@@ -45,34 +45,34 @@ const SITE_URL =
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "The Blues Hotel Golden Glory — Modern Business Hotel in Rajkot",
-    template: "%s | The Blues Hotel Golden Glory",
+    default: "Hotel Golden Glory — Modern Business Hotel in Rajkot",
+    template: "%s | Hotel Golden Glory",
   },
   description:
-    "34 thoughtfully designed rooms, 24/7 multi-cuisine dining at T3 Café, and 1100 sqft conference facilities. Exceptional value, exceptional service in the heart of Rajkot, Gujarat.",
+    "34 thoughtfully designed rooms, 24/7 multi-cuisine dining, and conference facilities. Exceptional value, exceptional service in the heart of Rajkot, Gujarat.",
   keywords: [
     "hotel rajkot",
     "business hotel rajkot",
     "hotel golden glory",
-    "the blues hotel",
+    "golden glory hotel rajkot",
     "rajkot accommodation",
     "conference hall rajkot",
     "hotel near bhakti nagar",
   ],
   openGraph: {
-    title: "The Blues Hotel Golden Glory — Modern Business Hotel in Rajkot",
+    title: "Hotel Golden Glory — Modern Business Hotel in Rajkot",
     description:
       "34 rooms, 4 categories, 24/7 dining, conference facilities. Exceptional value in the heart of Rajkot.",
     type: "website",
     locale: "en_IN",
-    siteName: "The Blues Hotel Golden Glory",
+    siteName: "Hotel Golden Glory",
   },
 };
 
 const hotelJsonLd = {
   "@context": "https://schema.org",
   "@type": "Hotel",
-  name: "The Blues Hotel Golden Glory",
+  name: "Hotel Golden Glory",
   description:
     "A modern business hotel in Rajkot offering 34 thoughtfully designed rooms across 4 categories, 24/7 multi-cuisine dining, and versatile conference facilities.",
   address: {

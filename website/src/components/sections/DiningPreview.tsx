@@ -106,10 +106,12 @@ export function DiningPreview() {
               }
               className="mt-6 text-base leading-relaxed text-soft-gray"
             >
-              Our in-house multi-cuisine restaurant serves breakfast, lunch,
-              dinner, and everything in between — 24 hours a day, 7 days a week.
-              From hearty Gujarati thalis to continental favourites, our kitchen
-              keeps you fuelled no matter when hunger strikes.
+              Breakfast, lunch, dinner — and every hour between. Our in-house
+              multi-cuisine restaurant serves hearty Gujarati thalis,
+              continental classics, and a global menu around the clock. A
+              2 AM arrival finds dinner waiting. A 5 AM departure finds
+              breakfast already on the way. Whenever you&apos;re hungry,
+              we&apos;re cooking.
             </motion.p>
           </motion.div>
         </div>

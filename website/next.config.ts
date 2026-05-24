@@ -1,3 +1,5 @@
+import { resolve, dirname } from "path";
+import { fileURLToPath } from "url";
 import type { NextConfig } from "next";
 
 /**
@@ -15,6 +17,8 @@ import type { NextConfig } from "next";
  *   for free when the admin replaces an image.
  */
 const nextConfig: NextConfig = {
+  output: "standalone",
+  outputFileTracingRoot: resolve(__dirname),
   // Allow LAN devices (phones, tablets) to load dev assets/HMR when hitting
   // the Mac's IP instead of `localhost`. Patterns are dotted segments, not
   // CIDR — `192.168.*.*` covers a typical home subnet. Without this, Next 16
@@ -29,7 +33,7 @@ const nextConfig: NextConfig = {
     ],
     formats: ["image/avif", "image/webp"],
     deviceSizes: [640, 768, 1024, 1280, 1536],
-    qualities: [50, 75],
+    qualities: [50, 75, 90],
     minimumCacheTTL: 60 * 60 * 24 * 30,
   },
 };

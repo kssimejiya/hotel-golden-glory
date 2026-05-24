@@ -201,8 +201,8 @@ export function BookingConfirmationEmail({
         <Container style={outer}>
           {/* Header */}
           <Section style={headerBar}>
-            <Text style={brandSmall}>The Blues · Hotel</Text>
-            <Text style={brandBig}>{hotelInfo.name}</Text>
+            <Text style={brandSmall}>The Blues</Text>
+            <Text style={brandBig}>{hotelInfo.shortName}</Text>
             <Heading as="h1" style={headingH1}>
               Booking Confirmed
             </Heading>

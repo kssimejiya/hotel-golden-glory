@@ -11,7 +11,7 @@ import {
 const stats = [
   { value: "34", label: "Thoughtfully Designed Rooms" },
   { value: "4", label: "Room Categories" },
-  { value: "1100", label: "Sqft Conference Hall" },
+  { value: "1", label: "Conference Hall" },
   { value: "24/7", label: "Multi-Cuisine Dining" },
 ];
 
@@ -23,15 +23,21 @@ export function WelcomeStrip() {
       <section className="bg-white py-20">
         <Container>
           <div className="mx-auto max-w-3xl text-center">
-            <h2 className="text-section-heading font-display font-semibold text-charcoal">
-              Welcome to Golden Glory
+            <p className="font-body text-sm font-semibold uppercase tracking-[0.2em] text-gold">
+              Welcome
+            </p>
+            <h2 className="mt-2 text-section-heading font-display font-semibold text-charcoal">
+              Rajkot&apos;s Address for the Modern Business Stay
             </h2>
             <div className="mx-auto mt-6 h-0.5 w-16 bg-gold" />
             <p className="mt-6 text-lg leading-relaxed text-soft-gray">
-              Nestled in Rajkot&apos;s thriving Bhakti Nagar district, The Blues
-              Hotel Golden Glory brings together modern comfort, dependable
-              service, and genuine value. Whether you&apos;re here for business
-              or exploring Saurashtra, consider this your home in the city.
+              The Blues Hotel Golden Glory is an independent business hotel in
+              Bhakti Nagar — minutes from Rajkot Junction and the city&apos;s
+              commercial centre, with the Saurashtra coast an easy drive away.
+              Thoughtfully designed rooms. Multi-cuisine dining around the
+              clock. Conference and meeting facilities for the days that matter.
+              A team that learns your name by the first morning. A stay built
+              for the way modern travellers move through Gujarat.
             </p>
           </div>
           <div className="mt-14 grid grid-cols-2 gap-8 md:grid-cols-4">
@@ -61,11 +67,17 @@ export function WelcomeStrip() {
           viewport={viewportConfig}
           className="mx-auto max-w-3xl text-center"
         >
+          <motion.p
+            variants={sectionItemVariants}
+            className="font-body text-sm font-semibold uppercase tracking-[0.2em] text-gold"
+          >
+            Welcome
+          </motion.p>
           <motion.h2
             variants={sectionItemVariants}
-            className="text-section-heading font-display font-semibold text-charcoal"
+            className="mt-2 text-section-heading font-display font-semibold text-charcoal"
           >
-            Welcome to Golden Glory
+            Rajkot&apos;s Address for the Modern Business Stay
           </motion.h2>
           <motion.div
             variants={sectionItemVariants}
@@ -75,10 +87,13 @@ export function WelcomeStrip() {
             variants={sectionItemVariants}
             className="mt-6 text-lg leading-relaxed text-soft-gray"
           >
-            Nestled in Rajkot&apos;s thriving Bhakti Nagar district, The Blues
-            Hotel Golden Glory brings together modern comfort, dependable
-            service, and genuine value. Whether you&apos;re here for business
-            or exploring Saurashtra, consider this your home in the city.
+            The Blues Hotel Golden Glory is an independent business hotel in
+            Bhakti Nagar — minutes from Rajkot Junction and the city&apos;s
+            commercial centre, with the Saurashtra coast an easy drive away.
+            Thoughtfully designed rooms. Multi-cuisine dining around the
+            clock. Conference and meeting facilities for the days that matter.
+            A team that learns your name by the first morning. A stay built
+            for the way modern travellers move through Gujarat.
           </motion.p>
         </motion.div>
 

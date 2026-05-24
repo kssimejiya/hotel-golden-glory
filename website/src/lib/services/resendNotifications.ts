@@ -25,7 +25,7 @@ import type { Booking } from "@/types";
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const EMAIL_FROM =
   process.env.EMAIL_FROM ||
-  "The Blues Hotel Golden Glory <onboarding@resend.dev>";
+  "Hotel Golden Glory <onboarding@resend.dev>";
 
 const PREVIEW_DIR = ".email-previews";
 
@@ -37,7 +37,7 @@ function getResend(): Resend | null {
 }
 
 function buildSubject(booking: Booking): string {
-  return `Booking Confirmed — ${booking.bookingId} — The Blues Hotel Golden Glory`;
+  return `Booking Confirmed — ${booking.bookingId} — Hotel Golden Glory`;
 }
 
 async function lookupRoomName(booking: Booking): Promise<string | undefined> {

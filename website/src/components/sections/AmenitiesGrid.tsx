@@ -10,6 +10,8 @@ import {
   Car,
   Map,
   Snowflake,
+  Plane,
+  BedSingle,
 } from "lucide-react";
 import { Container } from "@/components/shared/Container";
 import { SectionHeading } from "@/components/shared/SectionHeading";
@@ -29,6 +31,8 @@ const iconMap: Record<string, React.ElementType> = {
   Car,
   Map,
   Snowflake,
+  Plane,
+  BedSingle,
 };
 
 export function AmenitiesGrid() {
@@ -47,7 +51,7 @@ export function AmenitiesGrid() {
           initial={prefersReducedMotion ? undefined : "hidden"}
           whileInView={prefersReducedMotion ? undefined : "visible"}
           viewport={viewportConfig}
-          className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4"
+          className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-5"
         >
           {amenities.map((amenity) => {
             const Icon = iconMap[amenity.icon];

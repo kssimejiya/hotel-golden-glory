@@ -17,7 +17,7 @@ export const mockNotifications: NotificationService = {
   async sendGuestSMS(booking: Booking) {
     console.log("[MOCK SMS] Guest confirmation:", {
       to: booking.guest.phone,
-      message: `Your booking ${booking.bookingId} at The Blues Hotel Golden Glory is confirmed. Check-in: ${booking.dates.checkIn}. Total: ₹${booking.pricing.total}`,
+      message: `Your booking ${booking.bookingId} at Hotel Golden Glory is confirmed. Check-in: ${booking.dates.checkIn}. Total: ₹${booking.pricing.total}`,
     });
     return { sent: true };
   },

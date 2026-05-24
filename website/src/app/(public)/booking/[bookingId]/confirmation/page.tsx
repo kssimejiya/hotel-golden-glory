@@ -6,7 +6,7 @@ import { ConfirmationContent } from "./confirmation-content";
 
 export const metadata: Metadata = {
   title: "Booking Confirmed",
-  description: "Your booking at The Blues Hotel Golden Glory has been confirmed.",
+  description: "Your booking at Hotel Golden Glory has been confirmed.",
 };
 
 export default async function ConfirmationPage({

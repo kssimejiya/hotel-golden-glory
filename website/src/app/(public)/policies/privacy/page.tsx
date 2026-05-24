@@ -7,7 +7,7 @@ import { hotelInfo } from "@/lib/content";
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
-    "How The Blues Hotel Golden Glory collects, uses, and protects guest data.",
+    "How Hotel Golden Glory collects, uses, and protects guest data.",
 };
 
 // PRIVACY COPY — review with legal before launch

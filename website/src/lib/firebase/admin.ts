@@ -2,6 +2,7 @@ import "server-only";
 import {
   getApps,
   initializeApp,
+  applicationDefault,
   cert,
   type App,
   type ServiceAccount,
@@ -13,22 +14,8 @@ import { getStorage, type Storage } from "firebase-admin/storage";
 let cachedApp: App | null = null;
 
 function loudFail(message: string): never {
-  // Loud server-side error so misconfiguration is obvious in dev and in deploy logs.
   console.error(`[firebase/admin] ${message}`);
   throw new Error(`[firebase/admin] ${message}`);
-}
-
-function readPrivateKey(): string {
-  const raw = process.env.FIREBASE_ADMIN_PRIVATE_KEY;
-  if (!raw) {
-    loudFail(
-      "FIREBASE_ADMIN_PRIVATE_KEY not set. Paste the service-account private_key " +
-        'value (including BEGIN/END lines) into .env.local. Escaped "\\n" newlines are fine.'
-    );
-  }
-  // Most deployment hosts (Vercel, Render, etc.) require pasting the private key
-  // as a single-line string with escaped \n sequences. Convert back to real newlines.
-  return raw.includes("\\n") ? raw.replace(/\\n/g, "\n") : raw;
 }
 
 function initAdminApp(): App {
@@ -39,25 +26,33 @@ function initAdminApp(): App {
     return cachedApp;
   }
 
-  const projectId = process.env.FIREBASE_ADMIN_PROJECT_ID;
-  const clientEmail = process.env.FIREBASE_ADMIN_CLIENT_EMAIL;
   const storageBucket = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET;
+  const privateKey = process.env.FIREBASE_ADMIN_PRIVATE_KEY;
 
-  if (!projectId) loudFail("FIREBASE_ADMIN_PROJECT_ID not set in .env.local");
-  if (!clientEmail) loudFail("FIREBASE_ADMIN_CLIENT_EMAIL not set in .env.local");
-  const privateKey = readPrivateKey();
+  if (privateKey) {
+    const projectId = process.env.FIREBASE_ADMIN_PROJECT_ID;
+    const clientEmail = process.env.FIREBASE_ADMIN_CLIENT_EMAIL;
+    if (!projectId) loudFail("FIREBASE_ADMIN_PROJECT_ID not set");
+    if (!clientEmail) loudFail("FIREBASE_ADMIN_CLIENT_EMAIL not set");
 
-  const serviceAccount: ServiceAccount = {
-    projectId,
-    clientEmail,
-    privateKey,
-  };
+    const key = privateKey.includes("\\n")
+      ? privateKey.replace(/\\n/g, "\n")
+      : privateKey;
 
-  cachedApp = initializeApp({
-    credential: cert(serviceAccount),
-    projectId,
-    storageBucket,
-  });
+    const serviceAccount: ServiceAccount = { projectId, clientEmail, privateKey: key };
+    cachedApp = initializeApp({
+      credential: cert(serviceAccount),
+      projectId,
+      storageBucket,
+    });
+  } else {
+    // Firebase App Hosting provides Application Default Credentials automatically
+    cachedApp = initializeApp({
+      credential: applicationDefault(),
+      storageBucket,
+    });
+  }
+
   return cachedApp;
 }
 

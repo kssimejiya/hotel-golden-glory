@@ -10,12 +10,12 @@ export function Footer() {
           {/* Brand */}
           <div>
             <div className="mb-4">
-              <span className="font-display text-xl font-bold text-blue">
+              <span className="font-body text-[0.6rem] font-semibold uppercase tracking-[0.2em] text-gold">
                 THE BLUES
               </span>
               <br />
-              <span className="font-body text-[0.6rem] font-semibold uppercase tracking-[0.2em] text-gold">
-                Hotel Golden Glory
+              <span className="font-display text-xl font-bold text-blue">
+                HOTEL GOLDEN GLORY
               </span>
             </div>
             <address className="not-italic text-sm leading-relaxed text-cream/70">

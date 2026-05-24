@@ -11,9 +11,9 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "Rooms & Suites",
   description:
-    "Explore 34 thoughtfully designed rooms across 4 categories at The Blues Hotel Golden Glory, Rajkot. Deluxe, Superior, Premium with balcony, and Blues Suite — from ₹2,799 per night.",
+    "Explore 34 thoughtfully designed rooms across 4 categories at Hotel Golden Glory, Rajkot. Deluxe, Superior, Premium with balcony, and Blues Suite — from ₹2,799 per night.",
   openGraph: {
-    title: "Rooms & Suites — The Blues Hotel Golden Glory",
+    title: "Rooms & Suites — Hotel Golden Glory",
     description:
       "34 rooms, 4 categories, starting from ₹2,799. Find your perfect room in Rajkot.",
   },
