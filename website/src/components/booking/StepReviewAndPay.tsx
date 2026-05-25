@@ -3,21 +3,19 @@
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
+import { AlertTriangle, RefreshCw } from "lucide-react";
 import { useBookingWizardStore } from "@/lib/booking/store";
+import { finalizeBookingForPayment } from "@/lib/booking/finalize-actions";
 import {
-  createBookingAction,
-  updateBookingStatusAction,
-  notifyBookingConfirmedAction,
-  createPaymentOrderAction,
-  verifyPaymentAction,
-} from "@/lib/booking/booking-flow-actions";
+  verifyPaymentAndConfirm,
+  cancelAbandonedBooking,
+} from "@/lib/booking/verify-actions";
+import { formatCurrency } from "@/lib/booking/pricing";
 import { BookingSummaryCard } from "./BookingSummaryCard";
-import type { NewBooking, Room } from "@/types";
+import type { BookingPricing, Room } from "@/types";
 
-// The payment dialog is only mounted when the user clicks Pay — defer its
-// chunk so it doesn't ship with the review screen.
-const MockRazorpayDialog = dynamic(
-  () => import("./MockRazorpayDialog").then((m) => m.MockRazorpayDialog),
+const RazorpayCheckout = dynamic(
+  () => import("./RazorpayCheckout").then((m) => m.RazorpayCheckout),
   { ssr: false }
 );
 
@@ -25,6 +23,13 @@ interface StepReviewAndPayProps {
   onBack: () => void;
   rooms: Room[];
 }
+
+type FailureState =
+  | { type: "no_longer_available" }
+  | { type: "insufficient_inventory"; remaining: number }
+  | { type: "price_changed"; newPricing: BookingPricing }
+  | { type: "payment_cancelled" }
+  | { type: "generic"; message: string };
 
 export function StepReviewAndPay({ onBack, rooms }: StepReviewAndPayProps) {
   const router = useRouter();
@@ -38,25 +43,21 @@ export function StepReviewAndPay({ onBack, rooms }: StepReviewAndPayProps) {
     pricing,
     guestDetails,
     setBookingId,
+    setPricing,
   } = store;
 
   const [agreed, setAgreed] = useState(false);
   const [processing, setProcessing] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [showPayment, setShowPayment] = useState(false);
-  const [currentBookingId, setCurrentBookingId] = useState<string | null>(null);
+  const [failure, setFailure] = useState<FailureState | null>(null);
 
-  // Two distinct empty-state renders depending on context:
-  //   • If `processing` is true and data went missing, the user is mid-
-  //     payment-success-flow. The wizard data shouldn't actually be missing
-  //     at this point (reset now happens on the confirmation page, not
-  //     here), but as a defensive net we render a processing loader instead
-  //     of the "start over" message — that wording would be wrong and
-  //     alarming for a user whose payment just succeeded.
-  //   • If data is missing without processing, the user navigated directly
-  //     to this step URL without filling the wizard; "start over" is the
-  //     right message there.
-  // Either branch narrows the destructured values to non-null below.
+  // Razorpay checkout state
+  const [checkoutData, setCheckoutData] = useState<{
+    orderId: string;
+    razorpayKey: string;
+    amountInPaise: number;
+    bookingId: string;
+  } | null>(null);
+
   if (!roomSlug || !dates || !pricing || !guestDetails) {
     if (processing) {
       return (
@@ -75,90 +76,100 @@ export function StepReviewAndPay({ onBack, rooms }: StepReviewAndPayProps) {
     );
   }
 
+  const roomName =
+    rooms.find((r) => r.slug === roomSlug)?.name ?? roomSlug;
+
   async function handlePay() {
     if (!roomSlug || !dates || !pricing || !guestDetails) return;
     setProcessing(true);
-    setError(null);
+    setFailure(null);
 
     try {
-      const newBooking: NewBooking = {
+      const result = await finalizeBookingForPayment({
         roomSlug,
         mealPlan,
         occupancy,
         dates,
         guests,
-        pricing,
         guest: guestDetails,
-      };
-
-      const { bookingId } = await createBookingAction(newBooking);
-      setCurrentBookingId(bookingId);
-      setBookingId(bookingId);
-
-      await createPaymentOrderAction({
-        amountInPaise: pricing.total * 100,
-        bookingId,
-        receipt: `receipt_${bookingId}`,
+        expectedTotal: pricing.total,
       });
 
+      if (!result.ok) {
+        setProcessing(false);
+        switch (result.reason) {
+          case "no_longer_available":
+            setFailure({ type: "no_longer_available" });
+            return;
+          case "insufficient_inventory":
+            setFailure({
+              type: "insufficient_inventory",
+              remaining: result.remaining,
+            });
+            return;
+          case "price_changed":
+            setFailure({ type: "price_changed", newPricing: result.newPricing });
+            return;
+          case "room_not_found":
+            setFailure({ type: "generic", message: "Room not found. Please go back and select again." });
+            return;
+        }
+      }
+
+      setBookingId(result.bookingId);
+      setCheckoutData({
+        orderId: result.razorpayOrderId,
+        razorpayKey: result.razorpayKey,
+        amountInPaise: result.amountInPaise,
+        bookingId: result.bookingId,
+      });
       setProcessing(false);
-      setShowPayment(true);
-    } catch {
+    } catch (err) {
       setProcessing(false);
-      setError("Something went wrong. Please try again.");
+      const message =
+        err instanceof Error ? err.message : "Something went wrong. Please try again.";
+      setFailure({ type: "generic", message });
     }
   }
 
-  async function handlePaymentSuccess(paymentId: string, signature: string) {
-    if (!currentBookingId) return;
-    setShowPayment(false);
+  async function handlePaymentSuccess(response: {
+    razorpayPaymentId: string;
+    razorpayOrderId: string;
+    razorpaySignature: string;
+  }) {
+    if (!checkoutData) return;
+    setCheckoutData(null);
     setProcessing(true);
 
     try {
-      const { verified } = await verifyPaymentAction({
-        orderId: `order_${currentBookingId}`,
-        paymentId,
-        signature,
+      const result = await verifyPaymentAndConfirm({
+        bookingId: checkoutData.bookingId,
+        razorpayOrderId: response.razorpayOrderId,
+        razorpayPaymentId: response.razorpayPaymentId,
+        razorpaySignature: response.razorpaySignature,
       });
 
-      if (verified) {
-        await updateBookingStatusAction(currentBookingId, "confirmed");
-        // Notifications are best-effort — a failed email must never roll back a
-        // confirmed booking or block the guest from seeing their confirmation
-        // page. notifyBookingConfirmedAction already uses Promise.allSettled
-        // internally, but the extra try/catch here is belt-and-braces in case
-        // a future implementation throws.
-        try {
-          await notifyBookingConfirmedAction(currentBookingId);
-        } catch (notifyErr) {
-          console.error(
-            "[StepReviewAndPay] notification failed (booking is still confirmed):",
-            notifyErr
-          );
-        }
-        // Intentionally do NOT call store.reset() here. Resetting before
-        // router.push completes causes this still-mounted component to
-        // re-render with undefined wizard values and flash the "Missing
-        // booking data" empty state for a frame before navigation lands on
-        // the confirmation page. The confirmation page now owns the reset
-        // (see confirmation-content.tsx's mount effect) — by that point this
-        // component has unmounted, so the flash is impossible.
-        router.push(`/booking/${currentBookingId}/confirmation`);
+      if (result.ok) {
+        router.push(`/booking/${checkoutData.bookingId}/confirmation`);
       } else {
-        await updateBookingStatusAction(currentBookingId, "failed");
-        router.push(`/booking/${currentBookingId}/failed`);
+        router.push(`/booking/${checkoutData.bookingId}/failed`);
       }
     } catch {
-      await updateBookingStatusAction(currentBookingId, "failed");
-      router.push(`/booking/${currentBookingId}/failed`);
+      router.push(`/booking/${checkoutData.bookingId}/failed`);
     }
   }
 
-  async function handlePaymentFailure() {
-    if (!currentBookingId) return;
-    setShowPayment(false);
-    await updateBookingStatusAction(currentBookingId, "failed");
-    router.push(`/booking/${currentBookingId}/failed`);
+  async function handlePaymentDismiss() {
+    if (checkoutData) {
+      await cancelAbandonedBooking(checkoutData.bookingId);
+      setCheckoutData(null);
+      setFailure({ type: "payment_cancelled" });
+    }
+  }
+
+  function handleAcceptNewPrice(newPricing: BookingPricing) {
+    setPricing(newPricing);
+    setFailure(null);
   }
 
   return (
@@ -174,7 +185,7 @@ export function StepReviewAndPay({ onBack, rooms }: StepReviewAndPayProps) {
 
       <BookingSummaryCard
         roomSlug={roomSlug}
-        roomName={rooms.find((r) => r.slug === roomSlug)?.name}
+        roomName={roomName}
         mealPlan={mealPlan}
         occupancy={occupancy}
         dates={dates}
@@ -231,11 +242,8 @@ export function StepReviewAndPay({ onBack, rooms }: StepReviewAndPayProps) {
         </span>
       </label>
 
-      {error && (
-        <div className="rounded-xl bg-red-50 p-3">
-          <p className="text-sm text-red-600">{error}</p>
-        </div>
-      )}
+      {/* Failure states */}
+      {failure && <FailureNotice failure={failure} onAcceptPrice={handleAcceptNewPrice} onBack={onBack} onRetry={() => setFailure(null)} />}
 
       {/* Navigation */}
       <div className="flex gap-3">
@@ -250,7 +258,7 @@ export function StepReviewAndPay({ onBack, rooms }: StepReviewAndPayProps) {
         <button
           type="button"
           onClick={handlePay}
-          disabled={!agreed || processing}
+          disabled={!agreed || processing || !!checkoutData}
           className="flex-1 rounded-xl bg-gold py-3.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-gold-90 hover:shadow active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none"
         >
           {processing ? (
@@ -259,21 +267,164 @@ export function StepReviewAndPay({ onBack, rooms }: StepReviewAndPayProps) {
               Processing...
             </span>
           ) : (
-            `Pay ${pricing ? new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(pricing.total) : ""}`
+            `Pay ${formatCurrency(pricing.total)}`
           )}
         </button>
       </div>
 
-      {/* Mock Razorpay dialog */}
-      {showPayment && currentBookingId && pricing && (
-        <MockRazorpayDialog
-          amount={pricing.total}
-          bookingId={currentBookingId}
+      {/* Real Razorpay Checkout */}
+      {checkoutData && (
+        <RazorpayCheckout
+          orderId={checkoutData.orderId}
+          razorpayKey={checkoutData.razorpayKey}
+          amountInPaise={checkoutData.amountInPaise}
+          bookingId={checkoutData.bookingId}
+          roomName={roomName}
+          prefill={{
+            name: guestDetails.fullName,
+            email: guestDetails.email,
+            contact: guestDetails.phone,
+          }}
           onSuccess={handlePaymentSuccess}
-          onFailure={handlePaymentFailure}
-          onClose={() => setShowPayment(false)}
+          onDismiss={handlePaymentDismiss}
         />
       )}
     </div>
   );
+}
+
+function FailureNotice({
+  failure,
+  onAcceptPrice,
+  onBack,
+  onRetry,
+}: {
+  failure: FailureState;
+  onAcceptPrice: (p: BookingPricing) => void;
+  onBack: () => void;
+  onRetry: () => void;
+}) {
+  switch (failure.type) {
+    case "no_longer_available":
+      return (
+        <div className="rounded-xl border border-red-200 bg-red-50 p-4">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-red-500" />
+            <div>
+              <p className="text-sm font-medium text-red-800">
+                These dates are no longer available.
+              </p>
+              <p className="mt-1 text-xs text-red-600">
+                Another guest has booked this room. Please pick new dates or choose a different room.
+              </p>
+              <div className="mt-3 flex gap-2">
+                <button
+                  onClick={onBack}
+                  className="rounded-lg bg-red-100 px-3 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-200"
+                >
+                  Pick new dates
+                </button>
+                <a
+                  href="tel:+917574888944"
+                  className="rounded-lg border border-red-200 px-3 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-100"
+                >
+                  Call reservations
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+
+    case "insufficient_inventory":
+      return (
+        <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-500" />
+            <div>
+              <p className="text-sm font-medium text-amber-800">
+                Only {failure.remaining} room{failure.remaining > 1 ? "s" : ""} remaining for these dates.
+              </p>
+              <p className="mt-1 text-xs text-amber-600">
+                Would you like to book {failure.remaining} room{failure.remaining > 1 ? "s" : ""} instead?
+              </p>
+              <div className="mt-3 flex gap-2">
+                <button
+                  onClick={onBack}
+                  className="rounded-lg bg-amber-100 px-3 py-1.5 text-xs font-semibold text-amber-700 hover:bg-amber-200"
+                >
+                  Adjust rooms
+                </button>
+                <button
+                  onClick={onBack}
+                  className="rounded-lg border border-amber-200 px-3 py-1.5 text-xs font-semibold text-amber-700 hover:bg-amber-100"
+                >
+                  Choose different dates
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+
+    case "price_changed":
+      return (
+        <div className="rounded-xl border border-blue-200 bg-blue-50 p-4">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-blue-500" />
+            <div>
+              <p className="text-sm font-medium text-blue-800">
+                Rates have been updated.
+              </p>
+              <p className="mt-1 text-xs text-blue-600">
+                Your new total is{" "}
+                <span className="font-semibold">
+                  {formatCurrency(failure.newPricing.total)}
+                </span>
+                . Would you like to continue?
+              </p>
+              <div className="mt-3 flex gap-2">
+                <button
+                  onClick={() => onAcceptPrice(failure.newPricing)}
+                  className="rounded-lg bg-blue-100 px-3 py-1.5 text-xs font-semibold text-blue-700 hover:bg-blue-200"
+                >
+                  Continue with new rate
+                </button>
+                <button
+                  onClick={onBack}
+                  className="rounded-lg border border-blue-200 px-3 py-1.5 text-xs font-semibold text-blue-700 hover:bg-blue-100"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+
+    case "payment_cancelled":
+      return (
+        <div className="rounded-xl border border-border-warm bg-cream p-4">
+          <div className="flex items-center gap-3">
+            <RefreshCw className="h-4 w-4 shrink-0 text-soft-gray" />
+            <p className="text-sm text-soft-gray">
+              Payment cancelled — click Pay when you&apos;re ready to try again.
+            </p>
+          </div>
+        </div>
+      );
+
+    case "generic":
+      return (
+        <div className="rounded-xl bg-red-50 p-3">
+          <p className="text-sm text-red-600">{failure.message}</p>
+          <button
+            onClick={onRetry}
+            className="mt-2 text-xs font-semibold text-red-700 underline hover:no-underline"
+          >
+            Try again
+          </button>
+        </div>
+      );
+  }
 }

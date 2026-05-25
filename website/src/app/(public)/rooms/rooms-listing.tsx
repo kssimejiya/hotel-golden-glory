@@ -85,8 +85,6 @@ export function RoomsListing({ rooms }: { rooms: Room[] }) {
                     </div>
 
                     <div className="mt-3 flex flex-wrap gap-3 text-xs text-soft-gray">
-                      <span>{room.sqft} sqft</span>
-                      <span>·</span>
                       <span>{room.totalRooms} rooms</span>
                       <span>·</span>
                       <span>{room.bedConfiguration}</span>

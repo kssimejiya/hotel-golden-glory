@@ -65,8 +65,7 @@ export function RoomCategoriesPreview({ rooms }: { rooms: Room[] }) {
                     {room.name}
                   </h3>
                   <p className="mt-1 text-sm text-soft-gray">{room.tagline}</p>
-                  <div className="mt-3 flex items-center justify-between">
-                    <p className="text-sm text-soft-gray">{room.sqft} sqft</p>
+                  <div className="mt-3 flex items-center justify-end">
                     <p className="font-body text-base font-semibold text-gold">
                       from ₹{room.rates[0].single.toLocaleString("en-IN")}
                     </p>

@@ -177,7 +177,7 @@ export default async function AdminBookingDetailPage({ params }: Props) {
           </div>
           <div className="flex justify-between border-t border-border-warm pt-3">
             <dt className="font-semibold text-charcoal">Total</dt>
-            <dd className="font-display text-base font-bold tabular-nums text-gold">
+            <dd className="font-body text-lg font-bold tabular-nums text-green-700">
               ₹{booking.pricing.total.toLocaleString("en-IN")}
             </dd>
           </div>

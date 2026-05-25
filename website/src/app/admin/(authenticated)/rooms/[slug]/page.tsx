@@ -33,14 +33,18 @@ export default async function AdminRoomEditPage({
   const { slug } = await params;
   if (!isValidSlug(slug)) notFound();
 
-  // The room doc and the 90-day availability window are independent reads —
-  // fire them in parallel so the page renders after MAX(t_room, t_blocks)
-  // instead of t_room + t_blocks. On a cold Firestore this halves the wait.
-  const [room, blocksWindow] = await Promise.all([
-    roomRepo.getBySlug(slug),
-    availabilityRepo.getBlocksForRange(slug, todayIso(), plusDaysIso(90)),
-  ]);
+  const room = await roomRepo.getBySlug(slug);
   if (!room) notFound();
+
+  const [blocksWindow, occupancy] = await Promise.all([
+    availabilityRepo.getBlocksForRange(slug, todayIso(), plusDaysIso(90)),
+    availabilityRepo.getOccupancyForRange(
+      slug,
+      room.totalRooms,
+      todayIso(),
+      plusDaysIso(30)
+    ),
+  ]);
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
@@ -111,6 +115,7 @@ export default async function AdminRoomEditPage({
             slug={slug}
             totalRooms={room.totalRooms}
             existingBlocks={blocksWindow}
+            occupancy={occupancy}
           />
         </div>
       </section>

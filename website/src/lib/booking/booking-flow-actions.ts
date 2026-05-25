@@ -1,6 +1,7 @@
 "use server";
 
 import { bookingRepo, notifications, paymentService } from "@/lib/services";
+import { firestoreAvailability } from "@/lib/firebase/availabilityRepo";
 import type { Booking, BookingStatus, NewBooking } from "@/types";
 
 /**
@@ -12,6 +13,19 @@ import type { Booking, BookingStatus, NewBooking } from "@/types";
 export async function createBookingAction(
   newBooking: NewBooking
 ): Promise<{ bookingId: string }> {
+  const { available } = await firestoreAvailability.check({
+    roomSlug: newBooking.roomSlug,
+    checkIn: newBooking.dates.checkIn,
+    checkOut: newBooking.dates.checkOut,
+    rooms: newBooking.guests.rooms,
+  });
+
+  if (!available) {
+    throw new Error(
+      "This room is no longer available for your selected dates. Please go back and choose a different room or dates."
+    );
+  }
+
   return bookingRepo.create(newBooking);
 }
 

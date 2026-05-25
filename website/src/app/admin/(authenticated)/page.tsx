@@ -9,11 +9,13 @@ function StatCard({
   value,
   sub,
   icon: Icon,
+  currency,
 }: {
   label: string;
   value: string;
   sub?: string;
   icon: React.ComponentType<{ className?: string }>;
+  currency?: boolean;
 }) {
   return (
     <div className="rounded-xl border border-border-warm bg-white p-5 shadow-sm transition-shadow hover:shadow-md">
@@ -22,7 +24,13 @@ function StatCard({
           <p className="text-[11px] font-semibold uppercase tracking-wider text-soft-gray">
             {label}
           </p>
-          <p className="mt-2 font-display text-2xl font-bold tabular-nums text-charcoal">
+          <p
+            className={
+              currency
+                ? "mt-2 text-2xl font-bold tabular-nums text-charcoal"
+                : "mt-2 font-display text-2xl font-bold tabular-nums text-charcoal"
+            }
+          >
             {value}
           </p>
           {sub && <p className="mt-1 text-xs text-soft-gray">{sub}</p>}
@@ -122,6 +130,7 @@ export default async function AdminDashboardPage() {
           label="Revenue"
           value={`₹${totalRevenue.toLocaleString("en-IN")}`}
           sub="from confirmed bookings"
+          currency
         />
       </div>
 

@@ -170,7 +170,40 @@ export const firestoreAvailability: AvailabilityService = {
 // Admin-facing block management (used by the AvailabilityEditor in /admin/rooms).
 // ----------------------------------------------------------------------------
 
+export interface DateOccupancy {
+  date: string;
+  blocked: number;
+  booked: number;
+  available: number;
+}
+
 export const availabilityRepo = {
+  async getOccupancyForRange(
+    slug: RoomSlug,
+    totalRooms: number,
+    fromDate: string,
+    toDate: string
+  ): Promise<DateOccupancy[]> {
+    const dates = getDatesInRange(fromDate, toDate);
+    if (dates.length === 0) return [];
+
+    const [blockedMap, heldMap] = await Promise.all([
+      readBlockedMap(slug, dates),
+      readBookingHeldMap(slug, dates),
+    ]);
+
+    return dates.map((date) => {
+      const blocked = blockedMap.get(date) ?? 0;
+      const booked = heldMap.get(date) ?? 0;
+      return {
+        date,
+        blocked,
+        booked,
+        available: Math.max(0, totalRooms - blocked - booked),
+      };
+    });
+  },
+
   /**
    * For a slug + date range, returns docs that have either blocked > 0 OR
    * held > 0 (held is legacy; bookings are now the source of truth for held,

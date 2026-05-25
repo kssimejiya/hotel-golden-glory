@@ -3,7 +3,7 @@ import type {
   BookingRepository,
   NotificationService,
 } from "./types";
-import { mockPayment } from "./mocks/mockPayment";
+import { razorpayPayment } from "./razorpayPayment";
 import { firestoreBookingRepo } from "./firestoreBookingRepo";
 import { resendNotifications } from "./resendNotifications";
 
@@ -12,8 +12,7 @@ import { resendNotifications } from "./resendNotifications";
 // `checkAvailabilityAction` server action in src/lib/booking/availability-actions.ts.
 // Server code can import directly from `@/lib/firebase/availabilityRepo`.
 
-// payment: still mocked — swap to real Razorpay Orders + signature verify in payment phase
-export const paymentService: PaymentService = mockPayment;
+export const paymentService: PaymentService = razorpayPayment;
 
 // bookings: real Firestore-backed repo (collection: bookings/{bookingId})
 export const bookingRepo: BookingRepository = firestoreBookingRepo;

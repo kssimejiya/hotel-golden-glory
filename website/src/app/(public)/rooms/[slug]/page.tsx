@@ -26,10 +26,10 @@ export async function generateMetadata({
 
   return {
     title: room.name,
-    description: `${room.name} at Hotel Golden Glory, Rajkot — ${room.sqft} sqft, ${room.tagline}. Starting from ₹${room.rates[0].single.toLocaleString("en-IN")} per night.`,
+    description: `${room.name} at Hotel Golden Glory, Rajkot — ${room.tagline}. Starting from ₹${room.rates[0].single.toLocaleString("en-IN")} per night.`,
     openGraph: {
       title: `${room.name} — Hotel Golden Glory`,
-      description: `${room.tagline}. ${room.sqft} sqft, from ₹${room.rates[0].single.toLocaleString("en-IN")}/night.`,
+      description: `${room.tagline}. From ₹${room.rates[0].single.toLocaleString("en-IN")}/night.`,
       images: [{ url: room.heroImage, width: 1200, height: 800 }],
     },
   };

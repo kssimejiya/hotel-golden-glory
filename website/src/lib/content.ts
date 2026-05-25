@@ -168,7 +168,7 @@ export const rooms: Room[] = [
     shortName: "Suite",
     tagline: "The signature experience",
     description:
-      "The Blues Suite is our flagship accommodation — 320 square feet of thoughtfully designed space that sets the benchmark for hospitality in Rajkot. A separate living area with comfortable seating, a dedicated workspace, and a private balcony with panoramic views create an environment where you can host, work, and unwind without ever feeling confined.\n\nEvery detail has been elevated: from the premium bed linens and pillow menu to the marble bathroom with luxury toiletries, the Blues Suite delivers an experience that justifies its name. Six suites are available, each positioned on upper floors for maximum privacy and the best views in the house.",
+      "The Blues Suite is our flagship accommodation — thoughtfully designed space that sets the benchmark for hospitality in Rajkot. A separate living area with comfortable seating, a dedicated workspace, and a private balcony with panoramic views create an environment where you can host, work, and unwind without ever feeling confined.\n\nEvery detail has been elevated: from the premium bed linens and pillow menu to the marble bathroom with luxury toiletries, the Blues Suite delivers an experience that justifies its name. Six suites are available, each positioned on upper floors for maximum privacy and the best views in the house.",
     sqft: 320,
     totalRooms: 6,
     hasBalcony: true,
@@ -202,7 +202,7 @@ export const rooms: Room[] = [
       { url: "/images/rooms/shared/bathroom-hero.jpg" },
     ],
     highlights: [
-      "Largest rooms at 320 sqft with separate living area",
+      "Largest rooms with separate living area",
       "Private balcony with panoramic city views",
       "Dedicated workspace ideal for extended business stays",
       "Premium king bed with luxury linens and pillow menu",

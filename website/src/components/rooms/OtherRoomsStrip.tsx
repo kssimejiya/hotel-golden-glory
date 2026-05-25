@@ -70,10 +70,7 @@ export function OtherRoomsStrip({ others }: OtherRoomsStripProps) {
                     {room.name}
                   </h3>
                   <p className="mt-1 text-sm text-soft-gray">{room.tagline}</p>
-                  <div className="mt-3 flex items-center justify-between">
-                    <span className="text-sm text-soft-gray">
-                      {room.sqft} sqft
-                    </span>
+                  <div className="mt-3 flex items-center justify-end">
                     <span className="font-body text-base font-semibold text-gold">
                       from ₹{room.rates[0].single.toLocaleString("en-IN")}
                     </span>

@@ -174,7 +174,7 @@ export function StepRoomAndPlan({ rooms, onNext, onBack }: StepRoomAndPlanProps)
                         {room.name}
                       </h3>
                       <p className="mt-0.5 text-xs text-soft-gray">
-                        {room.sqft} sqft · {room.bedConfiguration}
+                        {room.bedConfiguration}
                       </p>
                     </div>
                     {/* Show the rate that *actually applies* given the

@@ -75,10 +75,6 @@ export function RoomDetail({ room, otherRooms }: RoomDetailProps) {
                     under the gold rule, left-aligned on lg+ */}
                 <div className="mt-5 flex flex-wrap justify-center gap-4 lg:justify-start">
                   <div className="flex items-center gap-2 rounded-lg bg-white px-3 py-2 text-sm text-charcoal shadow-sm">
-                    <Ruler className="h-4 w-4 text-gold" />
-                    {room.sqft} sqft
-                  </div>
-                  <div className="flex items-center gap-2 rounded-lg bg-white px-3 py-2 text-sm text-charcoal shadow-sm">
                     <Users className="h-4 w-4 text-gold" />
                     Max {room.maxOccupancy} guests
                   </div>
