@@ -26,3 +26,15 @@ env:
     value: firebase-adminsdk-fbsvc@hotelgoldenglory-79cab.iam.gserviceaccount.com
   - variable: EMAIL_FROM
     value: "The Blues Hotel Golden Glory <onboarding@resend.dev>"
+  - variable: ADMIN_PASSWORD
+    secret: ADMIN_PASSWORD
+  - variable: ADMIN_SESSION_SECRET
+    secret: ADMIN_SESSION_SECRET
+  - variable: RAZORPAY_KEY_ID
+    secret: RAZORPAY_KEY_ID
+  - variable: RAZORPAY_KEY_SECRET
+    secret: RAZORPAY_KEY_SECRET
+  - variable: FIREBASE_ADMIN_PRIVATE_KEY
+    secret: FIREBASE_ADMIN_PRIVATE_KEY
+  - variable: NEXT_PUBLIC_RAZORPAY_KEY_ID
+    value: rzp_test_StFxm2gMrVczUO
