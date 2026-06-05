@@ -325,7 +325,7 @@ function FailureNotice({
                   Pick new dates
                 </button>
                 <a
-                  href="tel:+917574888944"
+                  href="tel:+919081354542"
                   className="rounded-lg border border-red-200 px-3 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-100"
                 >
                   Call reservations

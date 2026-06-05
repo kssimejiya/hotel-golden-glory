@@ -84,7 +84,7 @@ const hotelJsonLd = {
     postalCode: "360002",
     addressCountry: "IN",
   },
-  telephone: "+91 9081354549",
+  telephone: "+91 9081354542",
   email: "info@hotelgoldenglory.com",
   priceRange: "₹2799 - ₹5199",
   checkinTime: "14:00",

@@ -16,7 +16,7 @@ export const hotelInfo = {
     country: "India",
     full: "Kanta Stri Vikas Grah Road, Near Bhutkhana Petrol Pump, Millpara, Bhakti Nagar, Rajkot, Gujarat 360002, India",
   },
-  phone: "+91 9081354549",
+  phone: "+91 9081354542",
   email: "info@hotelgoldenglory.com",
   checkIn: "14:00",
   checkOut: "12:00 noon",
