@@ -34,7 +34,9 @@ env:
     secret: RAZORPAY_KEY_ID
   - variable: RAZORPAY_KEY_SECRET
     secret: RAZORPAY_KEY_SECRET
+  - variable: RAZORPAY_WEBHOOK_SECRET
+    secret: RAZORPAY_WEBHOOK_SECRET
   - variable: FIREBASE_ADMIN_PRIVATE_KEY
     secret: FIREBASE_ADMIN_PRIVATE_KEY
   - variable: NEXT_PUBLIC_RAZORPAY_KEY_ID
-    value: rzp_test_StFxm2gMrVczUO
+    value: rzp_live_TBNpxC3eSAGVLf
