@@ -4,7 +4,7 @@ export const hotelInfo = {
   name: "Hotel Golden Glory",
   shortName: "Hotel Golden Glory",
   brand: "The Blues",
-  tagline: "Exceptional Value Exceptional Service",
+  tagline: "Your Comfort is our Glory",
   description:
     "A modern business hotel in Rajkot offering 34 thoughtfully designed rooms across 4 categories, 24/7 multi-cuisine dining, and versatile conference facilities.",
   address: {
@@ -17,7 +17,7 @@ export const hotelInfo = {
     full: "Kanta Stri Vikas Grah Road, Near Bhutkhana Petrol Pump, Millpara, Bhakti Nagar, Rajkot, Gujarat 360002, India",
   },
   phone: "+91 9081354542",
-  email: "info@hotelgoldenglory.com",
+  email: "reservations@hotelgoldenglory.com",
   checkIn: "14:00",
   checkOut: "12:00 noon",
   totalRooms: 34,

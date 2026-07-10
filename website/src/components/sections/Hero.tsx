@@ -144,7 +144,7 @@ export function Hero() {
               className="h-px w-8 bg-gold sm:w-14"
             />
             <span className="font-body text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-white sm:text-xs sm:tracking-[0.25em]">
-              Exceptional Value &middot; Exceptional Service
+              Your Comfort is our Glory
             </span>
           </motion.div>
 
