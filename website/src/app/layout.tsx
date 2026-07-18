@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
+import { hotelInfo } from "@/lib/content";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -77,15 +78,14 @@ const hotelJsonLd = {
     "A modern business hotel in Rajkot offering 34 thoughtfully designed rooms across 4 categories, 24/7 multi-cuisine dining, and versatile conference facilities.",
   address: {
     "@type": "PostalAddress",
-    streetAddress:
-      "Kanta Stri Vikas Grah Road, Near Bhutkhana Petrol Pump, Millpara, Bhakti Nagar",
-    addressLocality: "Rajkot",
-    addressRegion: "Gujarat",
-    postalCode: "360002",
+    streetAddress: `${hotelInfo.address.street}, ${hotelInfo.address.area}`,
+    addressLocality: hotelInfo.address.city,
+    addressRegion: hotelInfo.address.state,
+    postalCode: hotelInfo.address.zip,
     addressCountry: "IN",
   },
-  telephone: "+91 9081354542",
-  email: "reservations@hotelgoldenglory.com",
+  telephone: [hotelInfo.phone, hotelInfo.phone2],
+  email: hotelInfo.email,
   priceRange: "₹2799 - ₹5199",
   checkinTime: "14:00",
   checkoutTime: "12:00",
