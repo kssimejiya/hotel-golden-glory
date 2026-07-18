@@ -69,6 +69,12 @@ export default function ContactPage() {
                   >
                     {hotelInfo.phone}
                   </a>
+                  <a
+                    href={`tel:${hotelInfo.phone2}`}
+                    className="mt-1 block text-sm text-soft-gray transition-colors hover:text-gold"
+                  >
+                    {hotelInfo.phone2}
+                  </a>
                 </div>
               </div>
 
@@ -122,10 +128,10 @@ export default function ContactPage() {
                 </div>
               </div>
               <p className="mt-3 text-xs text-soft-gray">
-                In Bhakti Nagar, near Bhutkhana Petrol Pump — minutes from
-                Rajkot Junction, the city&apos;s commercial centre, and the
-                road west to Saurashtra. On-site parking, easy auto and cab
-                access.
+                At Bhutkhana Chowk on Bus Stand Road, behind Bhutkhana Petrol
+                Pump — minutes from Rajkot Junction, the city&apos;s commercial
+                centre, and the road west to Saurashtra. On-site parking, easy
+                auto and cab access.
               </p>
             </div>
           </div>
@@ -149,7 +155,7 @@ export default function ContactPage() {
               postalCode: hotelInfo.address.zip,
               addressCountry: "IN",
             },
-            telephone: hotelInfo.phone,
+            telephone: [hotelInfo.phone, hotelInfo.phone2],
             email: hotelInfo.email,
             checkinTime: hotelInfo.checkIn,
             checkoutTime: hotelInfo.checkOut,
