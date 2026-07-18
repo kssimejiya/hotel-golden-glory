@@ -10,10 +10,15 @@ export const metadata: Metadata = {
   description: `Contact ${hotelInfo.name} in ${hotelInfo.address.city}, ${hotelInfo.address.state} — phone, email, address, and map.`,
 };
 
-// Google Maps embed targets the verified Hotel Golden Glory place (ftid pins the
-// exact business listing rather than relying on a fuzzy address query).
+// Coordinates-only embed: querying the business listing makes Google overlay a
+// place card with its own registered address (currently outdated), so we centre
+// on the hotel's coordinates instead — the hotel still appears as a map label.
 const mapsSrc =
-  "https://www.google.com/maps?q=Hotel+Golden+Glory,+Millpara,+Bhakti+Nagar,+Rajkot,+Gujarat+360002&ftid=0x3959cbeefea1e7ad:0x220a1ca61eeb6d18&z=17&output=embed";
+  "https://www.google.com/maps?ll=22.2890233,70.8017917&z=17&output=embed";
+
+// Directions link opens the verified business listing in Google Maps proper.
+const mapsDirectionsUrl =
+  "https://maps.google.com/?ftid=0x3959cbeefea1e7ad:0x220a1ca61eeb6d18";
 
 export default function ContactPage() {
   return (
@@ -131,7 +136,15 @@ export default function ContactPage() {
                 At Bhutkhana Chowk on Bus Stand Road, behind Bhutkhana Petrol
                 Pump — minutes from Rajkot Junction, the city&apos;s commercial
                 centre, and the road west to Saurashtra. On-site parking, easy
-                auto and cab access.
+                auto and cab access.{" "}
+                <a
+                  href={mapsDirectionsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-semibold text-gold transition-colors hover:text-charcoal"
+                >
+                  Get directions
+                </a>
               </p>
             </div>
           </div>
