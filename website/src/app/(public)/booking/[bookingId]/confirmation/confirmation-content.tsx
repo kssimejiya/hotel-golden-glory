@@ -111,6 +111,13 @@ export function ConfirmationContent({ booking, roomName }: ConfirmationContentPr
                 >
                   {hotelInfo.phone}
                 </a>{" "}
+                /{" "}
+                <a
+                  href={`tel:${hotelInfo.phone2}`}
+                  className="font-medium text-blue hover:text-blue-dark"
+                >
+                  {hotelInfo.phone2}
+                </a>{" "}
                 or{" "}
                 <a
                   href={`mailto:${hotelInfo.email}`}

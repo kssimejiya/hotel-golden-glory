@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { AlertTriangle, RefreshCw } from "lucide-react";
 import { useBookingWizardStore } from "@/lib/booking/store";
+import { hotelInfo } from "@/lib/content";
 import { finalizeBookingForPayment } from "@/lib/booking/finalize-actions";
 import {
   verifyPaymentAndConfirm,
@@ -325,7 +326,7 @@ function FailureNotice({
                   Pick new dates
                 </button>
                 <a
-                  href="tel:+919081354542"
+                  href={`tel:${hotelInfo.phone}`}
                   className="rounded-lg border border-red-200 px-3 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-100"
                 >
                   Call reservations

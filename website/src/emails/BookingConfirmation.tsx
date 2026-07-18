@@ -446,6 +446,10 @@ export function BookingConfirmationEmail({
               Phone:{" "}
               <Link href={`tel:${hotelInfo.phone}`} style={linkStyle}>
                 {hotelInfo.phone}
+              </Link>{" "}
+              /{" "}
+              <Link href={`tel:${hotelInfo.phone2}`} style={linkStyle}>
+                {hotelInfo.phone2}
               </Link>
             </Text>
             <Text style={{ margin: 0, fontSize: "14px" }}>

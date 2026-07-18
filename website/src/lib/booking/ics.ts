@@ -19,7 +19,7 @@ export function generateICS(booking: Booking): string {
     `DTSTAMP:${now}`,
     `UID:${booking.bookingId}@hotelgoldenglory.com`,
     `SUMMARY:Stay at ${hotelInfo.name}`,
-    `DESCRIPTION:Booking ID: ${booking.bookingId}\\nRoom: ${booking.roomSlug}\\nGuests: ${booking.guests.adults} adults\\nCheck-in: 14:00\\nCheck-out: 12:00 noon\\nPhone: ${hotelInfo.phone}`,
+    `DESCRIPTION:Booking ID: ${booking.bookingId}\\nRoom: ${booking.roomSlug}\\nGuests: ${booking.guests.adults} adults\\nCheck-in: 14:00\\nCheck-out: 12:00 noon\\nPhone: ${hotelInfo.phone} / ${hotelInfo.phone2}`,
     `LOCATION:${hotelInfo.address.full}`,
     "STATUS:CONFIRMED",
     "END:VEVENT",

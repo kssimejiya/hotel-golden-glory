@@ -114,6 +114,13 @@ export default function CancellationPolicyPage() {
                   className="font-medium text-blue hover:text-blue-dark"
                 >
                   {hotelInfo.phone}
+                </a>{" "}
+                /{" "}
+                <a
+                  href={`tel:${hotelInfo.phone2}`}
+                  className="font-medium text-blue hover:text-blue-dark"
+                >
+                  {hotelInfo.phone2}
                 </a>
               </li>
               <li>

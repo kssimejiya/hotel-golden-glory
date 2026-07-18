@@ -71,6 +71,14 @@ export function Footer() {
               </li>
               <li>
                 <a
+                  href={`tel:${hotelInfo.phone2}`}
+                  className="transition-colors hover:text-gold"
+                >
+                  {hotelInfo.phone2}
+                </a>
+              </li>
+              <li>
+                <a
                   href={`mailto:${hotelInfo.email}`}
                   className="break-all transition-colors hover:text-gold"
                 >

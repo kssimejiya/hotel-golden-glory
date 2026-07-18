@@ -201,6 +201,14 @@ export function RoomDetail({ room, otherRooms }: RoomDetailProps) {
               </a>
               <span className="hidden text-cream/30 sm:inline">|</span>
               <a
+                href={`tel:${hotelInfo.phone2}`}
+                className="inline-flex items-center gap-2 text-sm text-cream/70 transition-colors hover:text-gold"
+              >
+                <Phone className="h-4 w-4" />
+                {hotelInfo.phone2}
+              </a>
+              <span className="hidden text-cream/30 sm:inline">|</span>
+              <a
                 href={`mailto:${hotelInfo.email}`}
                 className="inline-flex items-center gap-2 text-sm text-cream/70 transition-colors hover:text-gold"
               >

@@ -160,6 +160,14 @@ export function RoomsListing({ rooms }: { rooms: Room[] }) {
               </a>
               <span className="hidden text-soft-gray/40 sm:inline">|</span>
               <a
+                href={`tel:${hotelInfo.phone2}`}
+                className="inline-flex items-center gap-2 text-sm font-medium text-blue transition-colors hover:text-blue-dark"
+              >
+                <Phone className="h-4 w-4" />
+                {hotelInfo.phone2}
+              </a>
+              <span className="hidden text-soft-gray/40 sm:inline">|</span>
+              <a
                 href={`mailto:${hotelInfo.email}`}
                 className="text-sm font-medium text-blue transition-colors hover:text-blue-dark"
               >

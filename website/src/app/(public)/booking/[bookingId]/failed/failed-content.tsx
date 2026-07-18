@@ -63,6 +63,13 @@ export function FailedContent({ bookingId, booking }: FailedContentProps) {
                   {hotelInfo.phone}
                 </a>
                 <a
+                  href={`tel:${hotelInfo.phone2}`}
+                  className="inline-flex items-center justify-center gap-2 text-sm font-medium text-blue hover:text-blue-dark"
+                >
+                  <Phone className="h-4 w-4" />
+                  {hotelInfo.phone2}
+                </a>
+                <a
                   href={`mailto:${hotelInfo.email}`}
                   className="inline-flex items-center justify-center gap-2 text-sm font-medium text-blue hover:text-blue-dark"
                 >
