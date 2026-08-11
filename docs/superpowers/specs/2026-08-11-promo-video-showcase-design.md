@@ -189,10 +189,26 @@ the reduced-motion contract.
 
 ### Placement
 
-Homepage (`src/app/(public)/page.tsx`), between `AmenitiesGrid` and
-`ReceptionPreview`. The video leads with the lit exterior, which pairs
-naturally into the lobby and reception content that follows, and it sits below
-`RoomCategoriesPreview` so the conversion path is not pushed down the page.
+Homepage (`src/app/(public)/page.tsx`), between `RoomCategoriesPreview` and
+`AmenitiesGrid`.
+
+Sampling the footage settled this. The video is a full property tour —
+exterior at 0-4s, reception at 8s, lounge at 12s, guest rooms at 16-24s,
+restaurant at 28-32s. It traverses the same narrative as the whole homepage in
+35 seconds, which rules out placing it late: by the time a visitor has read the
+Amenities, Reception, and Dining sections, a video showing those same spaces is
+redundant. Its value is highest *before* the detail, not after.
+
+It goes after Rooms rather than before because Rooms is the conversion path and
+should not be pushed down. A visitor who has just scanned room cards as stills
+is at peak "show me the real thing" — which is exactly what the video answers.
+It then bridges into Amenities/Reception/Dining, each of which it has just
+previewed.
+
+The section is `bg-charcoal`, against `bg-cream` above and `bg-white` below.
+Dark is the correct surround for video — it makes footage read as footage
+rather than as another photo card — and it breaks up a page that is otherwise
+an unrelieved run of cream and white.
 
 This is a one-line import and one-line JSX change, trivial to move later.
 
@@ -233,6 +249,19 @@ It follows the `uploadBuffer` / `buildUrl` pattern from
 paste is simpler than codemodding a TypeScript literal, and the operation runs
 about once a year.
 
+**sharp gotcha, hit during implementation:** `sharp(...).resize(...).metadata()`
+reports the dimensions of the *input* image, not the queued resize. Using it to
+name variants labelled all four poster sizes `3840`, collapsing them onto one
+filename and putting false widths in the srcset. The fix is
+`toBuffer({ resolveWithObject: true })`, whose `info.width` / `info.height` are
+the real output dimensions.
+
+`scripts/upload-static-images.ts` uses that same `.metadata()` pattern and
+would produce the same collapsed variants if run. Nothing is affected today —
+the bucket currently holds no objects under `rooms/`, so that migration has
+evidently never been run against it — but the script should be fixed the same
+way before it ever is.
+
 ## Testing
 
 Automated:
@@ -253,12 +282,39 @@ Manual verification, all of which must be observed rather than assumed:
 - `prefers-reduced-motion: reduce` suppresses the entrance animation but leaves
   playback working.
 
-## Open Question
+## Resolved: Captions
 
-**Captions.** If the audio track contains narration or speech, a WebVTT
-`<track kind="captions">` is required for accessibility. If it is instrumental
-music only, none is needed. To be confirmed by listening to the file before
-implementation; the default assumption is instrumental, i.e. no captions.
+The audio is instrumental music only, confirmed by the owner. No WebVTT
+captions track is required.
+
+## Known Issue: Burned-In Contact Overlay
+
+The source video carries a permanent graphic overlay on every frame: the Hotel
+Golden Glory logo (top-left), The Blues logo (top-right), and a contact card
+(bottom-right) with both phone numbers, a QR code, the postal address, and an
+email address. It was cut for WhatsApp/social distribution, not for the
+hotel's own site.
+
+Two of those burned-in details disagree with `src/lib/content.ts`:
+
+| Field | Video overlay | `hotelInfo` |
+|---|---|---|
+| Landmark | `B/H BHADLAWALA PETROL PUMP` | `B/h Bhutkhana Petrol Pump` |
+| Email | `reservations.goldenglory@theblueshotels.com` | `reservations@hotelgoldenglory.com` |
+
+These cannot be fixed in code — they are pixels. Cropping them out is not
+viable either: they occupy three corners, so a safe crop is roughly
+2670x990 out of 3840x1920, which destroys the framing of shots composed for
+the full frame.
+
+The real fix is a clean re-export from whoever produced the video. Swapping it
+in is cheap — re-run `npm run video:encode && npm run video:upload` and paste
+the new URLs into `promoVideo`. Until then the overlay is visible during
+playback, and the section's duration badge is deliberately bottom-**left** so
+it does not collide with the contact card.
+
+Separately, the address discrepancy is worth resolving regardless of the
+video, since one of the two spellings is wrong on the live site.
 
 ## Non-Goals
 

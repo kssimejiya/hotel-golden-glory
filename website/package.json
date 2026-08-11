@@ -11,7 +11,9 @@
     "seed:rooms": "tsx scripts/seed-rooms.ts",
     "upload:images": "tsx scripts/upload-static-images.ts",
     "set:admin": "tsx scripts/set-admin-claim.ts",
-    "migrate:variants": "tsx scripts/migrate-gallery-variants.ts"
+    "migrate:variants": "tsx scripts/migrate-gallery-variants.ts",
+    "video:encode": "tsx scripts/encode-promo-video.ts",
+    "video:upload": "tsx scripts/upload-promo-video.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.4.1",
