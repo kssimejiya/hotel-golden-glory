@@ -45,3 +45,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# promo video encode intermediates (npm run video:encode)
+/.video-build/

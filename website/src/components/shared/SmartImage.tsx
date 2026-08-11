@@ -185,8 +185,10 @@ export function SmartImage({
     const webpSrcSet = srcSet(variants.webp);
     const fallbackSrc = effectiveSrc as string;
 
-    // fetchpriority is part of the HTML spec; React 19 supports it.
-    // The cast avoids @types/react version skew.
+    // React 19 exposes this as the camelCase `fetchPriority` prop and maps it
+    // to the lowercase `fetchpriority` HTML attribute itself. Passing the
+    // lowercase name instead makes React reject it as an unknown DOM property
+    // and drop it — so the hint never reached the browser at all.
     const eager = preload === true || loading === "eager";
 
     return wrap(
@@ -237,7 +239,7 @@ export function SmartImage({
                 })}
             loading={eager ? "eager" : "lazy"}
             decoding="async"
-            {...({ fetchpriority: eager ? "high" : "auto" } as unknown as Record<string, string>)}
+            fetchPriority={eager ? "high" : "auto"}
             className={cn(
               isFill && "absolute inset-0 h-full w-full",
               className,

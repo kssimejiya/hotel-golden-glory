@@ -21,6 +21,14 @@ service firebase.storage {
       allow write: if isAdmin();
     }
 
+    // videos/promo/<uuid>/{1920,1280}.mp4 + poster variants — uploaded by
+    // scripts/upload-promo-video.ts. Public-read so <video> and <SmartImage>
+    // on the homepage work for anonymous visitors.
+    match /videos/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
     // Default deny
     match /{allPaths=**} {
       allow read, write: if false;

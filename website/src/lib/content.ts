@@ -1,4 +1,4 @@
-import type { Room, Testimonial, Amenity } from "@/types";
+import type { Room, Testimonial, Amenity, GalleryImage } from "@/types";
 
 export const hotelInfo = {
   name: "Hotel Golden Glory",
@@ -333,3 +333,90 @@ export const navLinks = [
   { label: "Rooms", href: "/rooms" },
   { label: "Contact", href: "/contact" },
 ] as const;
+
+/**
+ * 35-second property tour, hosted on Firebase Storage.
+ *
+ * Two encodes rather than one: the desktop file averages ~2.8 Mbps and would
+ * buffer on a weak mobile connection, so <VideoShowcase> picks `mobile`
+ * (~1.4 Mbps) below the lg breakpoint. Regenerate both with
+ * `npm run video:encode && npm run video:upload`.
+ *
+ * The URLs carry a per-object download token and a `<uuid>` path segment, so
+ * replacing the video produces entirely new URLs and busts every cache for
+ * free — the same scheme room images use.
+ */
+export const promoVideo: {
+  sources: { desktop: string; mobile: string };
+  poster: GalleryImage;
+  durationSeconds: number;
+  eyebrow: string;
+  heading: string;
+  body: string;
+} = {
+  sources: {
+    desktop:
+      "https://firebasestorage.googleapis.com/v0/b/hotelgoldenglory-79cab.firebasestorage.app/o/videos%2Fpromo%2Fa3ed2f0d-296d-414c-8620-b034afa94fcd%2F1920.mp4?alt=media&token=31628c62-0433-4aee-b939-46537f57f8b7",
+    mobile:
+      "https://firebasestorage.googleapis.com/v0/b/hotelgoldenglory-79cab.firebasestorage.app/o/videos%2Fpromo%2Fa3ed2f0d-296d-414c-8620-b034afa94fcd%2F1280.mp4?alt=media&token=40357b8e-aa24-4f25-b2a9-8f516ae0ad87",
+  },
+  poster: {
+    original:
+      "https://firebasestorage.googleapis.com/v0/b/hotelgoldenglory-79cab.firebasestorage.app/o/videos%2Fpromo%2Fa3ed2f0d-296d-414c-8620-b034afa94fcd%2Fposter-original.jpg?alt=media&token=55a6123e-9ca1-4955-95d5-4661b8a2f46a",
+    width: 3840,
+    height: 1920,
+    alt: "Hotel Golden Glory's facade lit in warm gold at night",
+    blurDataURL:
+      "data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAKABQDASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAAAAIEBf/EACMQAAIABQQCAwAAAAAAAAAAAAECAAMEERIFEyExMnFBUWH/xAAUAQEAAAAAAAAAAAAAAAAAAAAD/8QAGxEAAgIDAQAAAAAAAAAAAAAAAAECIRESYUH/2gAMAwEAAhEDEQA/AOPVUyzGls6hQllNuCViGo6Z2RZWWWQ7PYitQZmnDIk8Ds/sNOAWtkleDc8j0YJbO8iUvDVtsiImGAUWAx+L+oQq3be8j19whXDoanw//9k=",
+    variants: {
+      avif: [
+        {
+          url: "https://firebasestorage.googleapis.com/v0/b/hotelgoldenglory-79cab.firebasestorage.app/o/videos%2Fpromo%2Fa3ed2f0d-296d-414c-8620-b034afa94fcd%2Fposter-640.avif?alt=media&token=e0170b7d-518e-42f3-a924-dbc50ca23181",
+          width: 640,
+          height: 320,
+        },
+        {
+          url: "https://firebasestorage.googleapis.com/v0/b/hotelgoldenglory-79cab.firebasestorage.app/o/videos%2Fpromo%2Fa3ed2f0d-296d-414c-8620-b034afa94fcd%2Fposter-1024.avif?alt=media&token=c70c7b8c-8a06-40ab-94dd-3c7ba505a915",
+          width: 1024,
+          height: 512,
+        },
+        {
+          url: "https://firebasestorage.googleapis.com/v0/b/hotelgoldenglory-79cab.firebasestorage.app/o/videos%2Fpromo%2Fa3ed2f0d-296d-414c-8620-b034afa94fcd%2Fposter-1600.avif?alt=media&token=e2cd6dee-4099-465d-bc89-2d38838071c2",
+          width: 1600,
+          height: 800,
+        },
+        {
+          url: "https://firebasestorage.googleapis.com/v0/b/hotelgoldenglory-79cab.firebasestorage.app/o/videos%2Fpromo%2Fa3ed2f0d-296d-414c-8620-b034afa94fcd%2Fposter-2400.avif?alt=media&token=4f270726-865d-4c59-95a0-13dbbefc4a06",
+          width: 2400,
+          height: 1200,
+        },
+      ],
+      webp: [
+        {
+          url: "https://firebasestorage.googleapis.com/v0/b/hotelgoldenglory-79cab.firebasestorage.app/o/videos%2Fpromo%2Fa3ed2f0d-296d-414c-8620-b034afa94fcd%2Fposter-640.webp?alt=media&token=6435d88b-abe0-400f-a303-cdca164038cd",
+          width: 640,
+          height: 320,
+        },
+        {
+          url: "https://firebasestorage.googleapis.com/v0/b/hotelgoldenglory-79cab.firebasestorage.app/o/videos%2Fpromo%2Fa3ed2f0d-296d-414c-8620-b034afa94fcd%2Fposter-1024.webp?alt=media&token=2403e7f7-6951-43a2-a04d-e8555e9a958b",
+          width: 1024,
+          height: 512,
+        },
+        {
+          url: "https://firebasestorage.googleapis.com/v0/b/hotelgoldenglory-79cab.firebasestorage.app/o/videos%2Fpromo%2Fa3ed2f0d-296d-414c-8620-b034afa94fcd%2Fposter-1600.webp?alt=media&token=a015cdd8-4862-4304-89b5-2056e137af35",
+          width: 1600,
+          height: 800,
+        },
+        {
+          url: "https://firebasestorage.googleapis.com/v0/b/hotelgoldenglory-79cab.firebasestorage.app/o/videos%2Fpromo%2Fa3ed2f0d-296d-414c-8620-b034afa94fcd%2Fposter-2400.webp?alt=media&token=90908947-05a2-4335-86d0-0964107a97de",
+          width: 2400,
+          height: 1200,
+        },
+      ],
+    },
+  },
+  durationSeconds: 34.783,
+  eyebrow: "Property Tour",
+  heading: "See the Whole Place in 35 Seconds",
+  body: "The lit facade after dark, the reception desk, the rooms, and the restaurant — filmed on the property, not borrowed from a stock library. Press play and see exactly what you are booking.",
+};
