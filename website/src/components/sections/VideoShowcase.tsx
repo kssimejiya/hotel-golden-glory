@@ -14,8 +14,77 @@ import {
   viewportConfig,
 } from "@/lib/animations";
 
-/** Start buffering this far before the section reaches the viewport. */
-const PRELOAD_MARGIN = "300px";
+/**
+ * Start buffering this far before the section reaches the viewport.
+ *
+ * Wide enough that buffering begins as soon as someone starts scrolling — the
+ * section sits directly under the Welcome copy, so a tighter margin left
+ * fast scrollers clicking before any data had arrived. Still short of firing
+ * at rest, so a visitor who lands and bounces without scrolling downloads
+ * nothing. The load+idle gate below is what protects the hero's LCP; this
+ * value only decides how early the request is queued behind it.
+ */
+const PRELOAD_MARGIN = "600px";
+
+/**
+ * Whether this visitor should get the background buffer at all.
+ *
+ * The section now sits directly under the Welcome copy, roughly one screen
+ * down, so the observer fires for very nearly everyone. That makes the
+ * connection check load-bearing rather than a nicety: a large share of this
+ * hotel's traffic is Indian mobile data, and silently pulling 6 MB on a capped
+ * or 2G connection is exactly the behaviour Save-Data exists to prevent.
+ * Declining only costs those visitors a buffering pause if they press play.
+ */
+function shouldPrebuffer(): boolean {
+  const conn = (
+    navigator as Navigator & {
+      connection?: { saveData?: boolean; effectiveType?: string };
+    }
+  ).connection;
+  if (!conn) return true; // Safari/Firefox: no signal, assume it's fine
+  if (conn.saveData) return false;
+  return !(conn.effectiveType === "2g" || conn.effectiveType === "slow-2g");
+}
+
+/**
+ * Run `cb` once the page has finished loading and the browser is idle.
+ *
+ * Without this the buffer would start while the hero image — the page's LCP
+ * element — is still downloading, and a 12 MB video would win bandwidth from
+ * the thing the visitor is actually looking at.
+ */
+function afterLoadWhenIdle(cb: () => void): () => void {
+  let idleHandle: number | undefined;
+  let cancelled = false;
+
+  // `typeof` rather than `"requestIdleCallback" in window`: the DOM lib
+  // already declares it, so the `in` form narrows the else branch to `never`
+  // and TypeScript then rejects window.setTimeout there. Safari only shipped
+  // requestIdleCallback in 16.4, so the fallback is still worth having.
+  const hasIdleCallback = typeof window.requestIdleCallback === "function";
+
+  const schedule = () => {
+    if (cancelled) return;
+    idleHandle = hasIdleCallback
+      ? window.requestIdleCallback(cb, { timeout: 2000 })
+      : window.setTimeout(cb, 200);
+  };
+
+  if (document.readyState === "complete") {
+    schedule();
+  } else {
+    window.addEventListener("load", schedule, { once: true });
+  }
+
+  return () => {
+    cancelled = true;
+    window.removeEventListener("load", schedule);
+    if (idleHandle === undefined) return;
+    if (hasIdleCallback) window.cancelIdleCallback(idleHandle);
+    else window.clearTimeout(idleHandle);
+  };
+}
 
 /** 34.783 → "0:35" */
 function formatDuration(seconds: number): string {
@@ -65,20 +134,28 @@ export function VideoShowcase() {
     const el = frameRef.current;
     if (!el) return;
 
-    // No IntersectionObserver (very old browsers): skip the warm start and
-    // fall back to loading on click. Playback still works, just not instantly.
+    // No IntersectionObserver (very old browsers), a metered/slow connection,
+    // or Save-Data: skip the warm start and fall back to loading on click.
+    // Playback still works either way, just not instantly.
     if (typeof IntersectionObserver === "undefined") return;
+    if (!shouldPrebuffer()) return;
 
+    let cancelIdle: (() => void) | undefined;
     const io = new IntersectionObserver(
       (entries) => {
         if (!entries.some((e) => e.isIntersecting)) return;
-        setSrc((current) => current ?? resolveSrc());
-        io.disconnect(); // one-shot: we only ever need to start the download once
+        io.disconnect(); // one-shot: the download only ever needs starting once
+        cancelIdle = afterLoadWhenIdle(() =>
+          setSrc((current) => current ?? resolveSrc())
+        );
       },
       { rootMargin: PRELOAD_MARGIN }
     );
     io.observe(el);
-    return () => io.disconnect();
+    return () => {
+      io.disconnect();
+      cancelIdle?.();
+    };
   }, [resolveSrc]);
 
   // Fallback path only: if someone clicks before the observer fired, the
@@ -171,10 +248,13 @@ export function VideoShowcase() {
                   alt={promoVideo.poster.alt ?? ""}
                   fill
                   quality={90}
-                  // Eager: this is a large, deliberate visual well down the
-                  // page. Lazy-loading it meant arriving at the section before
-                  // the image did, and watching the blur placeholder resolve.
+                  // Eager so the frame is sharp on arrival rather than
+                  // resolving out of its blur placeholder — but explicitly LOW
+                  // priority. The section sits about one screen down now, so
+                  // an eager+high poster would contend with the hero image,
+                  // which is the page's LCP element. Early, not urgent.
                   loading="eager"
+                  fetchPriority="low"
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 1024px"
                 />

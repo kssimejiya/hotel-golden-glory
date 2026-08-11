@@ -36,8 +36,8 @@ export default async function Home() {
       />
       <Hero />
       <WelcomeStrip />
-      <RoomCategoriesPreview rooms={rooms} />
       <VideoShowcase />
+      <RoomCategoriesPreview rooms={rooms} />
       <AmenitiesGrid />
       <ReceptionPreview />
       <DiningPreview />

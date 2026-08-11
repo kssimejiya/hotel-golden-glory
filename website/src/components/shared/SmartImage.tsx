@@ -94,6 +94,12 @@ export function SmartImage({
   height,
   preload,
   loading,
+  // Destructured so the <picture> path can honour it — {...rest} is only
+  // spread on the next/image path, so otherwise a caller-supplied value would
+  // be silently dropped here. Lets a caller load an image early WITHOUT
+  // giving it high priority, which matters when it would otherwise compete
+  // with the page's LCP element.
+  fetchPriority,
   ...rest
 }: SmartImageProps) {
   // ── MODE: fill vs fixed (mutually exclusive) ───────────────────
@@ -239,7 +245,7 @@ export function SmartImage({
                 })}
             loading={eager ? "eager" : "lazy"}
             decoding="async"
-            fetchPriority={eager ? "high" : "auto"}
+            fetchPriority={fetchPriority ?? (eager ? "high" : "auto")}
             className={cn(
               isFill && "absolute inset-0 h-full w-full",
               className,
