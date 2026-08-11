@@ -350,9 +350,12 @@ export const promoVideo: {
   sources: { desktop: string; mobile: string };
   poster: GalleryImage;
   durationSeconds: number;
-  eyebrow: string;
-  heading: string;
-  body: string;
+  /**
+   * Not rendered anywhere — the player sits under the Welcome heading, which
+   * supplies its on-page context. This exists for the VideoObject structured
+   * data on the homepage, where a description is required.
+   */
+  description: string;
 } = {
   sources: {
     desktop:
@@ -416,7 +419,6 @@ export const promoVideo: {
     },
   },
   durationSeconds: 34.783,
-  eyebrow: "Property Tour",
-  heading: "See the Whole Place in 35 Seconds",
-  body: "The lit facade after dark, the reception desk, the rooms, and the restaurant — filmed on the property, not borrowed from a stock library. Press play and see exactly what you are booking.",
+  description:
+    "A 35-second tour of Hotel Golden Glory in Rajkot — the lit facade after dark, the reception desk, the guest rooms, and the multi-cuisine restaurant, filmed on the property.",
 };

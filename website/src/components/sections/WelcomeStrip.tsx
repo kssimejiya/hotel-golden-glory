@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { Container } from "@/components/shared/Container";
+import { PromoVideoPlayer } from "@/components/shared/PromoVideoPlayer";
 import {
   sectionStaggerVariants,
   sectionItemVariants,
@@ -30,7 +31,11 @@ export function WelcomeStrip() {
               Rajkot&apos;s Address for the Modern Business Stay
             </h2>
             <div className="mx-auto mt-6 h-0.5 w-16 bg-gold" />
-            <p className="mt-6 text-lg leading-relaxed text-soft-gray">
+            {/* Sits between the heading and its description on purpose: the
+                heading above already names what the video shows, so the
+                player carries no title or copy of its own. */}
+            <PromoVideoPlayer className="mt-10" />
+            <p className="mt-10 text-lg leading-relaxed text-soft-gray">
               The Blues Hotel Golden Glory is an independent business hotel in
               Bhakti Nagar — minutes from Rajkot Junction and the city&apos;s
               commercial centre, with the Saurashtra coast an easy drive away.
@@ -83,9 +88,15 @@ export function WelcomeStrip() {
             variants={sectionItemVariants}
             className="mx-auto mt-6 h-0.5 w-16 bg-gold"
           />
+          {/* Sits between the heading and its description on purpose: the
+              heading above already names what the video shows, so the player
+              carries no title or copy of its own. */}
+          <motion.div variants={sectionItemVariants} className="mt-10">
+            <PromoVideoPlayer />
+          </motion.div>
           <motion.p
             variants={sectionItemVariants}
-            className="mt-6 text-lg leading-relaxed text-soft-gray"
+            className="mt-10 text-lg leading-relaxed text-soft-gray"
           >
             The Blues Hotel Golden Glory is an independent business hotel in
             Bhakti Nagar — minutes from Rajkot Junction and the city&apos;s

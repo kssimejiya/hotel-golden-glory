@@ -1,7 +1,6 @@
 import { Hero } from "@/components/sections/Hero";
 import { WelcomeStrip } from "@/components/sections/WelcomeStrip";
 import { RoomCategoriesPreview } from "@/components/sections/RoomCategoriesPreview";
-import { VideoShowcase } from "@/components/sections/VideoShowcase";
 import { AmenitiesGrid } from "@/components/sections/AmenitiesGrid";
 import { ReceptionPreview } from "@/components/sections/ReceptionPreview";
 import { DiningPreview } from "@/components/sections/DiningPreview";
@@ -18,7 +17,7 @@ const videoJsonLd = {
   "@context": "https://schema.org",
   "@type": "VideoObject",
   name: `${hotelInfo.name} — Property Tour`,
-  description: promoVideo.body,
+  description: promoVideo.description,
   thumbnailUrl: [promoVideo.poster.original],
   uploadDate: "2026-08-09",
   // ISO 8601. schema.org durations are conventionally whole seconds.
@@ -35,8 +34,9 @@ export default async function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(videoJsonLd) }}
       />
       <Hero />
+      {/* The property tour player lives inside WelcomeStrip, between its
+          heading and description — it is not a section of its own. */}
       <WelcomeStrip />
-      <VideoShowcase />
       <RoomCategoriesPreview rooms={rooms} />
       <AmenitiesGrid />
       <ReceptionPreview />
