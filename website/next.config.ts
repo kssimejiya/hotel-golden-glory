@@ -25,6 +25,12 @@ const nextConfig: NextConfig = {
   // blocks /_next/* requests cross-origin and the client hydrates partially:
   // visible HTML loads but framer-motion content stays at its `initial` state.
   allowedDevOrigins: ["192.168.*.*", "10.*.*.*", "*.local"],
+  // Superior was folded into Deluxe; keep old links and search results working.
+  async redirects() {
+    return [
+      { source: "/rooms/superior", destination: "/rooms/deluxe", permanent: true },
+    ];
+  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },

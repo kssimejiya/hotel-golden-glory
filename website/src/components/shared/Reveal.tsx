@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
+import { useHydratedReducedMotion } from "@/lib/hooks/useHydratedReducedMotion";
 import { fadeUp, fadeUpTransition, viewportConfig } from "@/lib/animations";
 import type { Transition } from "framer-motion";
 
@@ -11,7 +12,7 @@ interface RevealProps {
 }
 
 export function Reveal({ children, className, transition }: RevealProps) {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useHydratedReducedMotion();
 
   if (prefersReducedMotion) {
     return <div className={className}>{children}</div>;

@@ -316,7 +316,13 @@ export function BookingConfirmationEmail({
                     <Text style={valueText}>{guestsLine}</Text>
                   </td>
                 </tr>
-                <tr style={{ ...row, borderBottom: "none" }}>
+                {/* The last row drops its divider, so Rooms keeps one only when
+                    the honeymoon row follows it. */}
+                <tr
+                  style={
+                    booking.guest.honeymoon ? row : { ...row, borderBottom: "none" }
+                  }
+                >
                   <td>
                     <Text style={labelText}>Rooms</Text>
                   </td>
@@ -324,6 +330,16 @@ export function BookingConfirmationEmail({
                     <Text style={valueText}>{roomsLine}</Text>
                   </td>
                 </tr>
+                {booking.guest.honeymoon && (
+                  <tr style={{ ...row, borderBottom: "none" }}>
+                    <td>
+                      <Text style={labelText}>Honeymoon Package</Text>
+                    </td>
+                    <td style={{ textAlign: "right" as const }}>
+                      <Text style={valueText}>Half Kg Cake Free</Text>
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </Section>

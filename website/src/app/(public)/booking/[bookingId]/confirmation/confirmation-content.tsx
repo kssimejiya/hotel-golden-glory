@@ -90,13 +90,19 @@ export function ConfirmationContent({ booking, roomName }: ConfirmationContentPr
                   <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
                   The hotel has been notified of your booking
                 </li>
+                {booking.guest.honeymoon && (
+                  <li className="flex items-start gap-2">
+                    <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
+                    Honeymoon Package noted — Half Kg Cake Free
+                  </li>
+                )}
                 <li className="flex items-start gap-2">
                   <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
                   Please carry a valid photo ID at check-in (14:00)
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
-                  Check-out is by 12:00 noon
+                  Check-out is by 11:00 AM
                 </li>
               </ul>
             </div>

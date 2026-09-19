@@ -30,7 +30,7 @@ export function RoomsListing({ rooms }: { rooms: Room[] }) {
     <>
       <PageHero
         title="Our Rooms & Suites"
-        subtitle="34 thoughtfully designed rooms across 4 categories"
+        subtitle="34 thoughtfully designed rooms across 3 categories"
       />
       <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Rooms" }]} />
 

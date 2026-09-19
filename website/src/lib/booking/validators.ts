@@ -21,6 +21,7 @@ export const guestDetailsSchema = z.object({
     .optional()
     .or(z.literal("")),
   arrivalTime: z.string().optional(),
+  honeymoon: z.boolean().optional(),
 });
 
 export type GuestDetailsFormValues = z.infer<typeof guestDetailsSchema>;

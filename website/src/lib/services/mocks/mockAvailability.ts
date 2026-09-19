@@ -2,8 +2,9 @@ import type { AvailabilityService } from "../types";
 import type { RoomSlug } from "@/types";
 
 const baseInventory: Record<RoomSlug, number> = {
-  deluxe: 13,
-  superior: 13,
+  // Superior was folded into Deluxe; its 13 rooms are counted here now.
+  deluxe: 26,
+  superior: 0,
   premium: 2,
   "blues-suite": 6,
 };

@@ -168,7 +168,10 @@ export function StepRoomAndPlan({ rooms, onNext, onBack }: StepRoomAndPlanProps)
                   />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between gap-2">
+                  {/* The price stacks under the name on phones: side by side,
+                      a long category name ("Deluxe Premium Room") was squeezed
+                      onto three lines next to the image. */}
+                  <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-2">
                     <div className="min-w-0">
                       <h3 className="font-display text-base font-semibold text-charcoal">
                         {room.name}
@@ -182,7 +185,7 @@ export function StepRoomAndPlan({ rooms, onNext, onBack }: StepRoomAndPlanProps)
                         a hardcoded single rate. "from" signals it's the
                         cheapest meal plan (EP) — switching to CP or MAP
                         adjusts the rate upward, and GST is added on top. */}
-                    <div className="shrink-0 text-right">
+                    <div className="shrink-0 sm:text-right">
                       <p className="font-body text-sm font-semibold text-gold">
                         from{" "}
                         {formatCurrency(
@@ -190,9 +193,9 @@ export function StepRoomAndPlan({ rooms, onNext, onBack }: StepRoomAndPlanProps)
                             ? room.rates[0].single
                             : room.rates[0].double
                         )}
-                      </p>
-                      <p className="text-[0.65rem] uppercase tracking-[0.1em] text-soft-gray">
-                        / night
+                        <span className="ml-1 text-[0.65rem] font-normal uppercase tracking-[0.1em] text-soft-gray sm:ml-0 sm:block">
+                          / night
+                        </span>
                       </p>
                     </div>
                   </div>

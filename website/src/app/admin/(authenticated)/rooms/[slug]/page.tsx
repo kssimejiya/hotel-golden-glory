@@ -9,7 +9,7 @@ import { GalleryEditor } from "./gallery-editor";
 import { AvailabilityEditor } from "./availability-editor";
 import { RateEditor } from "./rate-editor";
 
-const VALID_SLUGS: RoomSlug[] = ["deluxe", "superior", "premium", "blues-suite"];
+const VALID_SLUGS: RoomSlug[] = ["deluxe", "premium", "blues-suite"];
 
 function isValidSlug(s: string): s is RoomSlug {
   return (VALID_SLUGS as string[]).includes(s);

@@ -51,6 +51,7 @@ async function main() {
       email: recipientArg,
       phone: "+919876543210",
       specialRequests: "This is a test email from the verification suite.",
+      honeymoon: true,
     },
     status: "confirmed" as const,
     createdAt: new Date().toISOString(),

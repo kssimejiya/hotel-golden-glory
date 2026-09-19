@@ -218,6 +218,12 @@ export function StepReviewAndPay({ onBack, rooms }: StepReviewAndPayProps) {
               <dd className="font-medium text-charcoal">{guestDetails.gstin}</dd>
             </div>
           )}
+          {guestDetails.honeymoon && (
+            <div className="flex justify-between">
+              <dt className="text-soft-gray">Honeymoon Package</dt>
+              <dd className="font-medium text-charcoal">Half Kg Cake Free</dd>
+            </div>
+          )}
         </dl>
       </div>
 

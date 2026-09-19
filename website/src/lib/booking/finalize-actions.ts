@@ -95,7 +95,9 @@ export async function finalizeBookingForPayment(
     return { ok: false, reason: "price_changed", newPricing: serverPricing };
   }
 
-  // (c) Create booking with awaiting_payment using SERVER-computed pricing
+  // (c) Create booking with awaiting_payment using SERVER-computed pricing.
+  // `honeymoon` comes from the client, so coerce it to a real boolean before
+  // it reaches Firestore and the admin panel.
   const { bookingId } = await bookingRepo.create({
     roomSlug,
     mealPlan,
@@ -103,7 +105,7 @@ export async function finalizeBookingForPayment(
     dates,
     guests,
     pricing: serverPricing,
-    guest,
+    guest: { ...guest, honeymoon: guest.honeymoon === true },
   });
 
   // (d) Create Razorpay order using server-computed amount

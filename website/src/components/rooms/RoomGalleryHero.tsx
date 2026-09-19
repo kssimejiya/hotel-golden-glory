@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
+import { useHydratedReducedMotion } from "@/lib/hooks/useHydratedReducedMotion";
 import { cn } from "@/lib/utils";
 import { SmartImage } from "@/components/shared/SmartImage";
 import { imageKey } from "@/lib/images/gallery";
@@ -38,7 +39,7 @@ export function RoomGalleryHero({ images, roomName }: RoomGalleryHeroProps) {
   // Token bumped per click so we can re-trigger the tap-echo CSS animation
   // even when clicking the same thumbnail (rare but ensures responsiveness).
   const [tapToken, setTapToken] = useState(0);
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useHydratedReducedMotion();
   const fadeTimer = useRef<number | null>(null);
 
   const active = images[activeIndex];

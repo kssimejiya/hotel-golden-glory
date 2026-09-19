@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
+import { useHydratedReducedMotion } from "@/lib/hooks/useHydratedReducedMotion";
 import { Star } from "lucide-react";
 import { Container } from "@/components/shared/Container";
 import { SectionHeading } from "@/components/shared/SectionHeading";
@@ -14,17 +15,19 @@ import {
 } from "@/lib/animations";
 
 export function TestimonialsSection() {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useHydratedReducedMotion();
 
   return (
     <section className="bg-cream py-20">
       <Container>
         <SectionHeading
           title="What Our Guests Say"
-          subtitle="Real feedback from business travellers who chose Golden Glory."
+          subtitle="Real feedback from guests who chose Golden Glory."
         />
 
+        {/* Keyed on the motion preference — see useHydratedReducedMotion. */}
         <motion.div
+          key={prefersReducedMotion ? "static" : "animated"}
           variants={prefersReducedMotion ? undefined : sectionStaggerVariants}
           initial={prefersReducedMotion ? undefined : "hidden"}
           whileInView={prefersReducedMotion ? undefined : "visible"}

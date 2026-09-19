@@ -16,7 +16,7 @@ async function requireAdmin() {
   return user;
 }
 
-const ROOM_SLUGS: RoomSlug[] = ["deluxe", "superior", "premium", "blues-suite"];
+const ROOM_SLUGS: RoomSlug[] = ["deluxe", "premium", "blues-suite"];
 
 function assertSlug(slug: string): RoomSlug {
   if (!ROOM_SLUGS.includes(slug as RoomSlug)) {

@@ -31,6 +31,7 @@ export const mockNotifications: NotificationService = {
       checkOut: booking.dates.checkOut,
       nights: booking.dates.nights,
       total: booking.pricing.total,
+      honeymoon: booking.guest.honeymoon === true,
     });
     return { sent: true };
   },

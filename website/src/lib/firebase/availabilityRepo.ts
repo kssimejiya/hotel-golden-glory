@@ -38,7 +38,7 @@ interface AvailabilityDoc {
   updatedAt: string;
 }
 
-async function readBlockedMap(
+async function readBlockedMapForSlug(
   slug: RoomSlug,
   dates: string[]
 ): Promise<Map<string, number>> {
@@ -77,7 +77,7 @@ async function readBlockedMap(
  * filter), then refine in code per-date. This keeps the query simple and
  * within Firestore's compound-index limits.
  */
-async function readBookingHeldMap(
+async function readBookingHeldMapForSlug(
   slug: RoomSlug,
   dates: string[]
 ): Promise<Map<string, number>> {
@@ -124,6 +124,36 @@ async function readBookingHeldMap(
   }
   return map;
 }
+
+/**
+ * Superior was folded into Deluxe. Bookings and admin blocks recorded under
+ * "superior" before the merge still occupy rooms in the merged Deluxe pool,
+ * so Deluxe availability counts both slugs — otherwise a date with an
+ * existing Superior booking could be sold twice.
+ */
+function inventorySlugs(slug: RoomSlug): RoomSlug[] {
+  return slug === "deluxe" ? ["deluxe", "superior"] : [slug];
+}
+
+async function sumAcrossInventory(
+  slug: RoomSlug,
+  dates: string[],
+  read: (slug: RoomSlug, dates: string[]) => Promise<Map<string, number>>
+): Promise<Map<string, number>> {
+  const maps = await Promise.all(
+    inventorySlugs(slug).map((s) => read(s, dates))
+  );
+  const total = new Map<string, number>();
+  for (const d of dates) {
+    total.set(d, maps.reduce((sum, m) => sum + (m.get(d) ?? 0), 0));
+  }
+  return total;
+}
+
+const readBlockedMap = (slug: RoomSlug, dates: string[]) =>
+  sumAcrossInventory(slug, dates, readBlockedMapForSlug);
+const readBookingHeldMap = (slug: RoomSlug, dates: string[]) =>
+  sumAcrossInventory(slug, dates, readBookingHeldMapForSlug);
 
 export const firestoreAvailability: AvailabilityService = {
   async check({ roomSlug, checkIn, checkOut, rooms }) {

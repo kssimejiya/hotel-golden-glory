@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
+import { useHydratedReducedMotion } from "@/lib/hooks/useHydratedReducedMotion";
 import { cn } from "@/lib/utils";
 import {
   sectionStaggerVariants,
@@ -21,7 +22,7 @@ export function SectionHeading({
   className,
   align = "center",
 }: SectionHeadingProps) {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useHydratedReducedMotion();
 
   const Wrapper = prefersReducedMotion ? "div" : motion.div;
   const wrapperProps = prefersReducedMotion

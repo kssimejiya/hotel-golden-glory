@@ -31,7 +31,7 @@ const StepReviewAndPay = dynamic(
   { ssr: false }
 );
 
-const ROOM_SLUGS = new Set(["deluxe", "superior", "premium", "blues-suite"]);
+const ROOM_SLUGS = new Set(["deluxe", "premium", "blues-suite"]);
 const MEAL_PLANS = new Set(["EP", "CP", "MAP"]);
 
 function InitFromParams() {
@@ -43,7 +43,9 @@ function InitFromParams() {
     // the URL changes, not on every store mutation.
     const { roomSlug: currentSlug, setRoom, setMealPlan } =
       useBookingWizardStore.getState();
-    const roomParam = searchParams.get("room");
+    // Superior was folded into Deluxe; old ?room=superior links land there.
+    const rawRoomParam = searchParams.get("room");
+    const roomParam = rawRoomParam === "superior" ? "deluxe" : rawRoomParam;
     const planParam = searchParams.get("plan");
     if (roomParam && ROOM_SLUGS.has(roomParam) && !currentSlug) {
       setRoom(roomParam as RoomSlug);
@@ -60,9 +62,13 @@ function SessionGuard() {
   useEffect(() => {
     // Imperative read so this is genuinely a once-on-mount check, not a
     // subscription that re-fires on every store update.
-    const { lastActivityAt, reset } = useBookingWizardStore.getState();
+    const { lastActivityAt, reset, roomSlug, setRoom } =
+      useBookingWizardStore.getState();
     if (Date.now() - lastActivityAt > 30 * 60 * 1000) {
       reset();
+    } else if (roomSlug === "superior") {
+      // A session that started before Superior was folded into Deluxe.
+      setRoom("deluxe");
     }
   }, []);
 

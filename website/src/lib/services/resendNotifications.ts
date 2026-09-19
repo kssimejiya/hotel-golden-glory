@@ -87,6 +87,7 @@ function previewSummary(booking: Booking, subject: string): string {
     } in ${booking.guests.rooms} room${booking.guests.rooms > 1 ? "s" : ""}`,
     `Total: ₹${booking.pricing.total.toLocaleString("en-IN")}`,
   ];
+  if (booking.guest.honeymoon) lines.push("Honeymoon Package: Half Kg Cake Free");
   return lines.join("\n  ");
 }
 

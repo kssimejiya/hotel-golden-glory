@@ -85,6 +85,14 @@ export default async function AdminBookingDetailPage({ params }: Props) {
               </dd>
             </div>
           )}
+          {booking.guest.honeymoon && (
+            <div>
+              <dt className="text-[11px] font-semibold uppercase tracking-wider text-soft-gray">Honeymoon Package</dt>
+              <dd className="font-medium text-charcoal">
+                Yes — Half Kg Cake Free
+              </dd>
+            </div>
+          )}
           {booking.guest.specialRequests && (
             <div className="col-span-2">
               <dt className="text-[11px] font-semibold uppercase tracking-wider text-soft-gray">Special Requests</dt>

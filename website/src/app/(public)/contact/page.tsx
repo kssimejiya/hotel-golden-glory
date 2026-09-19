@@ -3,22 +3,12 @@ import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { Container } from "@/components/shared/Container";
 import { PageHero } from "@/components/shared/PageHero";
 import { Breadcrumb } from "@/components/shared/Breadcrumb";
-import { hotelInfo } from "@/lib/content";
+import { hotelInfo, hotelLocation } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Contact",
   description: `Contact ${hotelInfo.name} in ${hotelInfo.address.city}, ${hotelInfo.address.state} — phone, email, address, and map.`,
 };
-
-// Coordinates-only embed: querying the business listing makes Google overlay a
-// place card with its own registered address (currently outdated), so we centre
-// on the hotel's coordinates instead — the hotel still appears as a map label.
-const mapsSrc =
-  "https://www.google.com/maps?ll=22.2890233,70.8017917&z=17&output=embed";
-
-// Directions link opens the verified business listing in Google Maps proper.
-const mapsDirectionsUrl =
-  "https://maps.google.com/?ftid=0x3959cbeefea1e7ad:0x220a1ca61eeb6d18";
 
 export default function ContactPage() {
   return (
@@ -123,7 +113,7 @@ export default function ContactPage() {
                   style={{ aspectRatio: "4 / 3" }}
                 >
                   <iframe
-                    src={mapsSrc}
+                    src={hotelLocation.embedUrl}
                     title={`Map showing ${hotelInfo.name}`}
                     loading="lazy"
                     allowFullScreen
@@ -133,12 +123,14 @@ export default function ContactPage() {
                 </div>
               </div>
               <p className="mt-3 text-xs text-soft-gray">
-                At Bhutkhana Chowk on Bus Stand Road, behind Bhutkhana Petrol
-                Pump — minutes from Rajkot Junction, the city&apos;s commercial
-                centre, and the road west to Saurashtra. On-site parking, easy
-                auto and cab access.{" "}
+                On Kanta Stri Vikas Grah Road near Bhutkhana Chowk, Canal
+                Road, Millpara, Bhakti Nagar — minutes from Rajkot Junction,
+                the city&apos;s
+                commercial centre, and the road west to Saurashtra.
+                Complimentary parking and valet parking, easy auto and cab
+                access.{" "}
                 <a
-                  href={mapsDirectionsUrl}
+                  href={hotelLocation.directionsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="font-semibold text-gold transition-colors hover:text-charcoal"
@@ -171,7 +163,8 @@ export default function ContactPage() {
             telephone: [hotelInfo.phone, hotelInfo.phone2],
             email: hotelInfo.email,
             checkinTime: hotelInfo.checkIn,
-            checkoutTime: hotelInfo.checkOut,
+            // schema.org wants a bare time, not the display label.
+            checkoutTime: "11:00",
           }),
         }}
       />

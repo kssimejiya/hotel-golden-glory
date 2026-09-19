@@ -1,23 +1,4 @@
-/**
- * Grant or revoke the `admin: true` custom claim on a Firebase Auth user.
- *
- * Setup:
- *   1. Create the user in Firebase Console → Authentication → Users → Add user.
- *   2. Run this script to flip the admin claim on:
- *        npx tsx scripts/set-admin-claim.ts staff@theblueshotels.com
- *   3. Have the user sign in (or sign out and back in) so a new ID token
- *      is minted with the updated claim. Existing sessions need to be
- *      revoked to take effect immediately — pass --revoke to force that:
- *        npx tsx scripts/set-admin-claim.ts staff@theblueshotels.com --revoke
- *
- * To revoke admin access:
- *        npx tsx scripts/set-admin-claim.ts staff@theblueshotels.com --off
- *
- * Existing custom claims on the user are preserved; only the `admin` field
- * is changed.
- *
- * Requires the same FIREBASE_ADMIN_* env vars as the Next.js runtime.
- */
+
 import { auth } from "./lib/init-admin";
 
 async function main() {

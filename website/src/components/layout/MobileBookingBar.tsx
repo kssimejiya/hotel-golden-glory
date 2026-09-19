@@ -1,9 +1,14 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
+import { useHydratedReducedMotion } from "@/lib/hooks/useHydratedReducedMotion";
 import { BookingButton } from "@/components/shared/BookingButton";
 import { iosSpring } from "@/lib/animations";
+import { rooms } from "@/lib/content";
+
+// The "from" price: the lowest Room Only, single-occupancy rate on offer.
+const startingRate = Math.min(...rooms.map((r) => r.rates[0].single));
 
 /**
  * Sticky bottom booking bar — mobile-only. Always within thumb reach so the
@@ -21,12 +26,14 @@ import { iosSpring } from "@/lib/animations";
  */
 export function MobileBookingBar() {
   const pathname = usePathname();
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useHydratedReducedMotion();
 
   if (pathname?.startsWith("/booking")) return null;
 
   return (
+    // Keyed on the motion preference — see useHydratedReducedMotion.
     <motion.aside
+      key={prefersReducedMotion ? "static" : "animated"}
       role="region"
       aria-label="Quick booking"
       initial={prefersReducedMotion ? undefined : { y: "100%" }}
@@ -43,7 +50,7 @@ export function MobileBookingBar() {
             From
           </p>
           <p className="font-display text-lg font-bold leading-tight text-white">
-            ₹2,799
+            ₹{startingRate.toLocaleString("en-IN")}
             <span className="ml-1 font-body text-xs font-medium text-white/55">
               / night
             </span>

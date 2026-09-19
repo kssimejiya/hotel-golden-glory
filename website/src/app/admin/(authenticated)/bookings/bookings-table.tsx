@@ -120,6 +120,11 @@ export function BookingsTable({ bookings }: { bookings: Booking[] }) {
                         <div>
                           <p className="font-medium text-charcoal">
                             {b.guest.fullName}
+                            {b.guest.honeymoon && (
+                              <span className="ml-2 inline-flex items-center rounded-full bg-gold-10 px-2 py-0.5 align-middle text-[10px] font-semibold uppercase tracking-wider text-gold">
+                                Honeymoon
+                              </span>
+                            )}
                           </p>
                           <p className="text-xs text-soft-gray">
                             {b.guest.phone}

@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { Select as SelectPrimitive } from "@base-ui/react/select";
-import { Check, ChevronDown } from "lucide-react";
+import { Cake, Check, ChevronDown } from "lucide-react";
 import { useBookingWizardStore } from "@/lib/booking/store";
 import { guestDetailsSchema } from "@/lib/booking/validators";
+import { specialOffer } from "@/lib/content";
 import type { GuestDetails } from "@/types";
 
 interface StepGuestDetailsProps {
@@ -21,6 +23,11 @@ const arrivalSlots = Array.from({ length: 33 }, (_, i) => {
 
 export function StepGuestDetails({ onNext, onBack }: StepGuestDetailsProps) {
   const { guestDetails, setGuestDetails } = useBookingWizardStore();
+  // The homepage special offer links here with ?offer=honeymoon, so a guest
+  // arriving from it finds the box already ticked. A choice they made on an
+  // earlier visit to this step wins over the link.
+  const arrivedFromHoneymoonOffer =
+    useSearchParams().get("offer") === "honeymoon";
 
   const [form, setForm] = useState<GuestDetails>({
     fullName: guestDetails?.fullName ?? "",
@@ -29,6 +36,7 @@ export function StepGuestDetails({ onNext, onBack }: StepGuestDetailsProps) {
     specialRequests: guestDetails?.specialRequests ?? "",
     gstin: guestDetails?.gstin ?? "",
     arrivalTime: guestDetails?.arrivalTime ?? "",
+    honeymoon: guestDetails?.honeymoon ?? arrivedFromHoneymoonOffer,
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -234,6 +242,33 @@ export function StepGuestDetails({ onNext, onBack }: StepGuestDetailsProps) {
           </SelectPrimitive.Portal>
         </SelectPrimitive.Root>
       </div>
+
+      {/* Honeymoon — where the homepage special offer is claimed. A native
+          checkbox, like the terms checkbox on the review step; the whole card
+          is the label, so the tap target is the card, not a 16px box. */}
+      <label
+        htmlFor="honeymoon"
+        className="flex cursor-pointer items-start gap-3 rounded-xl border border-border-warm bg-white p-4 transition-colors hover:border-gold/50 has-checked:border-gold has-checked:bg-gold-5"
+      >
+        <input
+          id="honeymoon"
+          type="checkbox"
+          checked={form.honeymoon ?? false}
+          onChange={(e) =>
+            setForm((prev) => ({ ...prev, honeymoon: e.target.checked }))
+          }
+          className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer accent-gold"
+        />
+        <span>
+          <span className="flex items-center gap-2 text-sm font-medium text-charcoal">
+            Honeymoon stay
+            <Cake className="h-4 w-4 text-gold" aria-hidden="true" />
+          </span>
+          <span className="mt-0.5 block text-xs text-soft-gray">
+            {specialOffer.title}
+          </span>
+        </span>
+      </label>
 
       {/* Special Requests */}
       <div>
