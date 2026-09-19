@@ -1,9 +1,9 @@
 import { Hero } from "@/components/sections/Hero";
 import { WelcomeStrip } from "@/components/sections/WelcomeStrip";
 import { RoomCategoriesPreview } from "@/components/sections/RoomCategoriesPreview";
-import { AmenitiesGrid } from "@/components/sections/AmenitiesGrid";
-import { ReceptionPreview } from "@/components/sections/ReceptionPreview";
-import { DiningPreview } from "@/components/sections/DiningPreview";
+import { FacilitiesSection } from "@/components/sections/FacilitiesSection";
+import { InAndAroundSection } from "@/components/sections/InAndAroundSection";
+import { SpecialOfferBanner } from "@/components/sections/SpecialOfferBanner";
 import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
 import { roomRepo } from "@/lib/firebase/roomRepo";
 import { hotelInfo, promoVideo } from "@/lib/content";
@@ -33,14 +33,19 @@ export default async function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(videoJsonLd) }}
       />
+      {/* Section order is the hotel's final website structure: photo slider,
+          welcome, rooms, facilities — then In & Around, the brief's nearby
+          places that the hotel wants on the homepage, and the honeymoon
+          special offer, which the hotel chose to keep. Address and map live
+          in the footer. */}
       <Hero />
       {/* The property tour player lives inside WelcomeStrip, between its
           heading and description — it is not a section of its own. */}
       <WelcomeStrip />
       <RoomCategoriesPreview rooms={rooms} />
-      <AmenitiesGrid />
-      <ReceptionPreview />
-      <DiningPreview />
+      <FacilitiesSection />
+      <InAndAroundSection />
+      <SpecialOfferBanner />
       {/* <TestimonialsSection /> */}
     </>
   );

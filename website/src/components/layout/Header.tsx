@@ -66,8 +66,10 @@ export function Header() {
         }
       />
 
-      <div className="relative mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex flex-col leading-none">
+      <div className="relative mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4 sm:px-6 lg:px-8">
+        {/* A wordmark stands in for the logo until the hotel sends the artwork
+            file; "RAJKOT" completes the name the final structure asks for. */}
+        <Link href="/" className="flex min-w-0 flex-col leading-none">
           <span
             className={cn(
               "font-body text-[0.6rem] font-semibold uppercase tracking-[0.2em] transition-colors duration-300",
@@ -78,33 +80,38 @@ export function Header() {
           </span>
           <span
             className={cn(
-              "font-display text-xl font-bold tracking-wide transition-colors duration-300",
+              "whitespace-nowrap font-display text-[0.95rem] font-bold tracking-wide transition-colors duration-300 sm:text-xl",
               scrolled ? "text-blue" : "text-white"
             )}
           >
-            HOTEL GOLDEN GLORY
+            HOTEL GOLDEN GLORY RAJKOT
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-8 lg:flex">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={cn(
-                "font-body text-sm font-medium transition-colors duration-200 hover:text-gold outline-none focus-visible:text-gold",
-                scrolled ? "text-charcoal" : "text-white"
-              )}
-            >
-              {link.label}
-            </Link>
-          ))}
-          <BookingButton variant="gold" size="default" href="/booking">
-            Book Now
-          </BookingButton>
-        </nav>
+        <div className="flex shrink-0 items-center gap-1 lg:gap-6">
+          <nav className="hidden items-center gap-8 lg:flex">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={cn(
+                  "font-body text-sm font-medium transition-colors duration-200 hover:text-gold outline-none focus-visible:text-gold",
+                  scrolled ? "text-charcoal" : "text-white"
+                )}
+              >
+                {link.label}
+              </Link>
+            ))}
+            <BookingButton variant="gold" size="default" href="/booking">
+              Book Now
+            </BookingButton>
+          </nav>
 
-        <MobileNav scrolled={scrolled} />
+          {/* One menu button in the corner at every screen size: it opens the
+              navigation and, under it, the amenities the four-dot (::) menu
+              used to hold on its own. */}
+          <MobileNav scrolled={scrolled} />
+        </div>
       </div>
     </motion.header>
   );
